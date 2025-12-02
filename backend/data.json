@@ -1,0 +1,62 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "test@example.com",
+      "password_hash": "$2b$10$q9uHEnxFEl3dXcnMcvb1n.IgHZi2fxR8hQ7qyCv7o9vX38a6FImTe",
+      "stripe_customer_id": "cus_TX0IwgAQD5pkvR",
+      "created_at": "2025-12-02T15:40:40.229Z"
+    },
+    {
+      "id": 2,
+      "email": "leroidunord55@gmail.com",
+      "password_hash": "$2b$10$JSVWsOiVk1m0f0tYpsQl7.4Q73IS86S0mvmx1e3AG9cal38z.IrzC",
+      "stripe_customer_id": "cus_TX1f6huXJ9qTlH",
+      "created_at": "2025-12-02T17:43:50.420Z"
+    },
+    {
+      "id": 3,
+      "email": "test@test.com",
+      "password_hash": "$2b$10$AQnKuSlR7MsFuD3nxkua5Ox6yrUGDRIVlRlCqWBKcOZ6TPspzJguu",
+      "stripe_customer_id": null,
+      "created_at": "2025-12-02T20:20:31.479Z"
+    },
+    {
+      "id": 4,
+      "email": "bugtest@example.com",
+      "password_hash": "$2b$10$XtuBcYprOao5AGk/QOiCUuyXxHQKBk6gOvAd3CgFETnwnEJ.6JqNO",
+      "stripe_customer_id": null,
+      "created_at": "2025-12-02T20:20:34.458Z"
+    },
+    {
+      "id": 5,
+      "email": "newuser@example.com",
+      "password_hash": "$2b$10$ulgmRlktWxrdnf.uxEl8De5Slr3QpkKhUXWOZCQcNbx15TNZHYWye",
+      "stripe_customer_id": null,
+      "created_at": "2025-12-02T20:24:48.760Z"
+    },
+    {
+      "id": 6,
+      "email": "fulltest@example.com",
+      "password_hash": "$2b$10$C/W9lbOQVgetsdovcLKz6OP74Xj9mc6yxs8NWcUGByX60v4gA/2e2",
+      "stripe_customer_id": null,
+      "created_at": "2025-12-02T20:24:54.315Z"
+    },
+    {
+      "id": 7,
+      "email": "user1764707104@example.com",
+      "password_hash": "$2b$10$tQ7bdli.2rr440QWIbm7TOdm.M.C9tY5vOjOjCAJ98Ccsnh8ryXrK",
+      "stripe_customer_id": null,
+      "created_at": "2025-12-02T20:25:04.754Z"
+    },
+    {
+      "id": 8,
+      "email": "test1764707112@ex.com",
+      "password_hash": "$2b$10$Um/LLNws0zZ.7t.0ZhcoQuA/vQjrsn9FOymssMfVQl0B6RLc7zgGm",
+      "stripe_customer_id": "cus_TX4GCgcGZRzOdD",
+      "created_at": "2025-12-02T20:25:12.423Z"
+    }
+  ],
+  "subscriptions": [],
+  "alerts": []
+}
