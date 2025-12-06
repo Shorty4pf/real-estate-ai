@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const Stripe = require('stripe');
 const { Low, JSONFile } = require('lowdb');
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
@@ -319,7 +319,7 @@ app.post('/api/signup', async (req, res) => {
     // prevent duplicate emails
     const existing = await findUserByEmail(email);
     if (existing) return res.status(400).json({ error: 'Email already used' });
-    const hash = await bcrypt.hash(password, 10);
+    const hash = await bcryptjs.hash(password, 10);
     const user = await createUser({ email, password_hash: hash });
     const token = generateToken(user);
     return res.json({ token, user: { id: user.id, email: user.email } });
@@ -335,7 +335,7 @@ app.post('/api/login', async (req, res) => {
   if (!email || !password) return res.status(400).json({ error: 'Missing fields' });
   const row = await findUserByEmail(email);
   if (!row) return res.status(401).json({ error: 'Invalid credentials' });
-  const ok = await bcrypt.compare(password, row.password_hash);
+  const ok = await bcryptjs.compare(password, row.password_hash);
   if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
   const token = generateToken({ id: row.id, email: row.email });
   return res.json({ token, user: { id: row.id, email: row.email } });
@@ -593,14 +593,5 @@ setInterval(async () => {
   }
 }, 30 * 1000);
 
-const PORT = 4242;
-initDb()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Stripe backend running on http://localhost:${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error('Failed to initialize DB', err);
-    process.exit(1);
-  });
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log("Server running on port " + PORT));
