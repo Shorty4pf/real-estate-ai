@@ -198,7 +198,7 @@ function authenticate(req, res, next) {
   }
 }
 
-// setup nodemailer transporter (required for production)
+// setup nodemailer transporter (optional) and Brevo API support
 let transporter = null;
 if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
   transporter = nodemailer.createTransport({
@@ -210,7 +210,7 @@ if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
       pass: process.env.SMTP_PASS,
     },
   });
-  
+
   // test connection on startup
   transporter.verify((error, success) => {
     if (error) {
@@ -220,7 +220,58 @@ if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
     }
   });
 } else {
-  console.warn('⚠️ SMTP not configured - alert emails will only log to console');
+  console.warn('⚠️ SMTP not configured - nodemailer transporter disabled');
+}
+
+// Helper: send email via Brevo API if configured, otherwise fall back to nodemailer transporter or console
+async function sendEmail({ to, subject, html, from }) {
+  const senderEmail = from || process.env.SMTP_FROM || process.env.SMTP_USER || `no-reply@${process.env.FRONTEND_URL?.replace(/^https?:\/\//, '') || 'localhost'}`;
+
+  // Try Brevo first if API key is present
+  if (process.env.BREVO_API_KEY) {
+    try {
+      const payload = {
+        sender: { email: senderEmail },
+        to: [{ email: to }],
+        subject: subject,
+        htmlContent: html,
+      };
+
+      const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'api-key': process.env.BREVO_API_KEY,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(`Brevo send failed: ${res.status} ${res.statusText} ${text}`);
+      }
+      console.log(`✓ Email sent via Brevo to ${to} (subject: ${subject})`);
+      return true;
+    } catch (err) {
+      console.error('Brevo send error:', err.message || err);
+      // fallthrough to try transporter or console
+    }
+  }
+
+  // Fallback to nodemailer transporter if available
+  if (transporter) {
+    try {
+      await transporter.sendMail({ from: senderEmail, to, subject, html });
+      console.log(`✓ Email sent via SMTP to ${to} (subject: ${subject})`);
+      return true;
+    } catch (err) {
+      console.error('SMTP send error:', err.message || err);
+    }
+  }
+
+  // Last resort: log to console
+  console.log('EMAIL LOG --', { to, subject, html: String(html).slice(0, 500) });
+  return false;
 }
 
 /**
@@ -384,6 +435,19 @@ app.get('/api/session', async (req, res) => {
   }
 });
 
+// Test email endpoint (useful to validate Brevo / SMTP configuration)
+app.post('/api/test-email', async (req, res) => {
+  const { to, subject, html } = req.body || {};
+  if (!to) return res.status(400).json({ error: 'Missing `to` field in JSON body' });
+  try {
+    await sendEmail({ to, subject: subject || 'Test email from Real Estate AI', html: html || `<p>Ceci est un email de test envoyé depuis Real Estate AI.</p>` });
+    return res.json({ ok: true, message: 'Email sent (or attempted). Check logs / inbox.' });
+  } catch (err) {
+    console.error('Test email error:', err);
+    return res.status(500).json({ error: 'Unable to send test email' });
+  }
+});
+
 // Webhook receiver (optional) — verifies events and logs subscription lifecycle
 app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
@@ -429,14 +493,13 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
             await updateUserStripeCustomerId(userId, s.customer);
           }
           
-          // Send welcome email to user
+          // Send welcome email to user (Brevo -> SMTP -> console)
           const user = await findUserById(userId);
-          if (user && transporter) {
+          if (user) {
             const planLabel = plan === 'premium' ? 'Premium' : 'Pro';
             const billingLabel = billing === 'month' ? 'mensuel' : 'annuel';
             try {
-              await transporter.sendMail({
-                from: process.env.SMTP_FROM || process.env.SMTP_USER,
+              await sendEmail({
                 to: user.email,
                 subject: `✓ Bienvenue ! Votre abonnement ${planLabel} est actif`,
                 html: `<p>Bienvenue,</p>
@@ -445,9 +508,8 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
 <p><a href="${process.env.FRONTEND_URL}/dashboard" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Accéder au tableau de bord</a></p>
 <p>Cordialement,<br/>L'équipe Real Estate AI</p>`,
               });
-              console.log('✓ Welcome email sent to', user.email);
             } catch (mailErr) {
-              console.error('Error sending welcome email:', mailErr.message);
+              console.error('Error sending welcome email:', mailErr.message || mailErr);
             }
           }
         }
@@ -462,18 +524,21 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
       const invoice = event.data.object;
       try {
         const userRow = await findUserByStripeCustomer(invoice.customer);
-        if (userRow && transporter) {
-          await transporter.sendMail({
-            from: process.env.SMTP_FROM || process.env.SMTP_USER,
-            to: userRow.email,
-            subject: `✓ Paiement reçu - Facture ${invoice.number}`,
-            html: `<p>Merci pour votre paiement.</p>
+        if (userRow) {
+          try {
+            await sendEmail({
+              to: userRow.email,
+              subject: `✓ Paiement reçu - Facture ${invoice.number}`,
+              html: `<p>Merci pour votre paiement.</p>
 <p>Montant: <strong>€${(invoice.amount_paid / 100).toFixed(2)}</strong></p>
 <p>Facture: ${invoice.number}</p>`,
-          });
+            });
+          } catch (err) {
+            console.error('Error sending payment receipt:', err.message || err);
+          }
         }
       } catch (err) {
-        console.error('Error sending payment receipt:', err.message);
+        console.error('Error handling payment succeeded webhook:', err);
       }
       break;
     }
@@ -507,14 +572,17 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
       console.log('⚠️ Subscription cancelled:', sub.id);
       try {
         const userRow = await findUserByStripeCustomer(sub.customer);
-        if (userRow && transporter) {
-          await transporter.sendMail({
-            from: process.env.SMTP_FROM || process.env.SMTP_USER,
-            to: userRow.email,
-            subject: 'Votre abonnement a été annulé',
-            html: `<p>Nous avons enregistré l'annulation de votre abonnement.</p>
+        if (userRow) {
+          try {
+            await sendEmail({
+              to: userRow.email,
+              subject: 'Votre abonnement a été annulé',
+              html: `<p>Nous avons enregistré l'annulation de votre abonnement.</p>
 <p>Vos données restent sauvegardées. N'hésitez pas à vous réabonner à tout moment.</p>`,
-          });
+            });
+          } catch (err) {
+            console.error('Error sending cancellation email:', err.message || err);
+          }
         }
         await upsertSubscription({ user_id: userRow?.id || null, stripe_subscription_id: sub.id, plan: null, billing_period: null, status: 'canceled' });
       } catch (err) {
@@ -679,16 +747,11 @@ setInterval(async () => {
 </div>
       `;
       
-      if (transporter) {
-        await transporter.sendMail({
-          from: process.env.SMTP_FROM || process.env.SMTP_USER,
-          to: a.email,
-          subject,
-          html,
-        });
-        console.log(`✓ Alert email sent to ${a.email} for criteria: ${a.criteria}`);
-      } else {
-        console.log(`ALERT EMAIL (to ${a.email}): ${subject}`);
+      try {
+        await sendEmail({ to: a.email, subject, html });
+        console.log(`✓ Alert email attempted to ${a.email} for criteria: ${a.criteria}`);
+      } catch (err) {
+        console.error('Error sending alert email', err.message || err);
       }
       await incrementAlertEmailCount(a.id);
     } catch (err) {
