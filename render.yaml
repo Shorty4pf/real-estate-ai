@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: real-estate-ai-backend
+    runtime: node
+    startCommand: node backend/server.js
+    envVars:
+      - key: STRIPE_SECRET_KEY
+        scope: build,runtime
+      - key: STRIPE_PUBLISHABLE_KEY
+        scope: build,runtime
+      - key: STRIPE_WEBHOOK_SECRET
+        scope: build,runtime
+      - key: PRICE_PREMIUM_MONTHLY_ID
+        scope: build,runtime
+      - key: PRICE_PREMIUM_YEARLY_ID
+        scope: build,runtime
+      - key: PRICE_PRO_MONTHLY_ID
+        scope: build,runtime
+      - key: PRICE_PRO_YEARLY_ID
+        scope: build,runtime
+      - key: JWT_SECRET
+        scope: build,runtime
+      - key: FRONTEND_URL
+        scope: build,runtime
+      - key: SMTP_HOST
+        scope: build,runtime
+      - key: SMTP_PORT
+        value: "587"
+        scope: build,runtime
+      - key: SMTP_USER
+        scope: build,runtime
+      - key: SMTP_PASS
+        scope: build,runtime
+      - key: SMTP_FROM
+        scope: build,runtime
