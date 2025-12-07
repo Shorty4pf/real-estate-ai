@@ -761,4 +761,11 @@ setInterval(async () => {
 }, 30 * 1000);
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log("Server running on port " + PORT));
+
+// Initialize the DB before starting the server to ensure db.data is available
+initDb().then(() => {
+  app.listen(PORT, () => console.log("Server running on port " + PORT));
+}).catch((err) => {
+  console.error('Failed to initialize database:', err);
+  process.exit(1);
+});
