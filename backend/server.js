@@ -18,6 +18,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", timestamp: Date.now() });
+});
+
+
 // --- DB init (lowdb JSON) ---
 const adapter = new JSONFile('./data.json');
 const db = new Low(adapter);
@@ -222,13 +227,13 @@ app.post('/api/create-checkout-session', async (req, res) => {
     let priceId;
 
     if (plan === 'premium' && billing === 'month') {
-      priceId = process.env.PRICE_PREMIUM_MONTH;
+      priceId = process.env.PRICE_PREMIUM_MONTHLY_ID;
     } else if (plan === 'premium' && billing === 'year') {
-      priceId = process.env.PRICE_PREMIUM_YEAR;
+      priceId = process.env.PRICE_PREMIUM_YEARLY_ID;
     } else if (plan === 'pro' && billing === 'month') {
-      priceId = process.env.PRICE_PRO_MONTH;
+      priceId = process.env.PRICE_PRO_MONTHLY_ID;
     } else if (plan === 'pro' && billing === 'year') {
-      priceId = process.env.PRICE_PRO_YEAR;
+      priceId = process.env.PRICE_PRO_YEARLY_ID;
     }
 
     // if caller provided an Authorization bearer token, associate the customer
