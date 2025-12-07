@@ -1,5 +1,15 @@
 import type { FC } from "react";
-import type { Subscription } from "./App";
+
+interface Subscription {
+  id: number;
+  user_id: number;
+  stripe_subscription_id: string;
+  plan: string;
+  billing_period: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
 
 interface DashboardProps {
   user: { id: number; email: string; stripe_customer_id: string | null; created_at: string } | null;
