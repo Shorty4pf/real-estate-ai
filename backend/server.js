@@ -198,18 +198,29 @@ function authenticate(req, res, next) {
   }
 }
 
-// setup nodemailer transporter (optional : if NO SMTP configured it will fallback to console log)
+// setup nodemailer transporter (required for production)
 let transporter = null;
-if (process.env.SMTP_HOST) {
+if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
   transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT) || 587,
-    secure: process.env.SMTP_SECURE === 'true',
+    secure: (Number(process.env.SMTP_PORT) === 465), // true for 465, false for other ports
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
   });
+  
+  // test connection on startup
+  transporter.verify((error, success) => {
+    if (error) {
+      console.error('SMTP connection error:', error.message);
+    } else {
+      console.log('✓ SMTP transporter ready');
+    }
+  });
+} else {
+  console.warn('⚠️ SMTP not configured - alert emails will only log to console');
 }
 
 /**
@@ -393,7 +404,7 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
   // Handle some useful events
   switch (event.type) {
     case 'checkout.session.completed': {
-      console.log('Checkout session completed:', event.data.object.id);
+      console.log('✓ Checkout session completed:', event.data.object.id);
       try {
         // fetch full session
         const s = await stripe.checkout.sessions.retrieve(event.data.object.id, { expand: ['subscription', 'customer'] });
@@ -409,6 +420,7 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
           const sub = s.subscription;
           const plan = metadata.plan || (sub.items?.data?.[0]?.price?.product || null);
           const billing = metadata.billing || (sub.items?.data?.[0]?.price?.recurring?.interval || null);
+          
           // insert or update subscriptions table
           await upsertSubscription({ user_id: userId, stripe_subscription_id: sub.id, plan, billing_period: billing, status: sub.status });
 
@@ -416,19 +428,58 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
           if (s.customer) {
             await updateUserStripeCustomerId(userId, s.customer);
           }
+          
+          // Send welcome email to user
+          const user = await findUserById(userId);
+          if (user && transporter) {
+            const planLabel = plan === 'premium' ? 'Premium' : 'Pro';
+            const billingLabel = billing === 'month' ? 'mensuel' : 'annuel';
+            try {
+              await transporter.sendMail({
+                from: process.env.SMTP_FROM || process.env.SMTP_USER,
+                to: user.email,
+                subject: `✓ Bienvenue ! Votre abonnement ${planLabel} est actif`,
+                html: `<p>Bienvenue,</p>
+<p>Merci d'avoir souscrit à l'abonnement <strong>${planLabel}</strong> (${billingLabel}).</p>
+<p>Votre compte est maintenant activé et vous pouvez accéder à toutes les fonctionnalités premium.</p>
+<p><a href="${process.env.FRONTEND_URL}/dashboard" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Accéder au tableau de bord</a></p>
+<p>Cordialement,<br/>L'équipe Real Estate AI</p>`,
+              });
+              console.log('✓ Welcome email sent to', user.email);
+            } catch (mailErr) {
+              console.error('Error sending welcome email:', mailErr.message);
+            }
+          }
         }
       } catch (err) {
         console.error('Error processing checkout.session.completed:', err);
       }
       break;
     }
+    case 'invoice.payment_succeeded': {
+      console.log('✓ Payment succeeded for invoice:', event.data.object.id);
+      // Optionally send payment receipt email
+      const invoice = event.data.object;
+      try {
+        const userRow = await findUserByStripeCustomer(invoice.customer);
+        if (userRow && transporter) {
+          await transporter.sendMail({
+            from: process.env.SMTP_FROM || process.env.SMTP_USER,
+            to: userRow.email,
+            subject: `✓ Paiement reçu - Facture ${invoice.number}`,
+            html: `<p>Merci pour votre paiement.</p>
+<p>Montant: <strong>€${(invoice.amount_paid / 100).toFixed(2)}</strong></p>
+<p>Facture: ${invoice.number}</p>`,
+          });
+        }
+      } catch (err) {
+        console.error('Error sending payment receipt:', err.message);
+      }
       break;
-    case 'invoice.payment_succeeded':
-      console.log('Payment succeeded for invoice:', event.data.object.id);
-      break;
+    }
     case 'customer.subscription.created': {
       const sub = event.data.object;
-      console.log('Subscription created:', sub.id);
+      console.log('✓ Subscription created:', sub.id);
       try {
         // find user by customer id
         const userRow = await findUserByStripeCustomer(sub.customer);
@@ -440,29 +491,37 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
       }
       break;
     }
-      break;
     case 'customer.subscription.updated': {
       const sub = event.data.object;
-      console.log('Subscription updated:', sub.id);
+      console.log('✓ Subscription updated:', sub.id);
       try {
-        await upsertSubscription({ user_id: null, stripe_subscription_id: sub.id, plan: sub.items?.data?.[0]?.price?.product || null, billing_period: sub.items?.data?.[0]?.price?.recurring?.interval || null, status: sub.status });
+        const userRow = await findUserByStripeCustomer(sub.customer);
+        await upsertSubscription({ user_id: userRow?.id || null, stripe_subscription_id: sub.id, plan: sub.items?.data?.[0]?.price?.product || null, billing_period: sub.items?.data?.[0]?.price?.recurring?.interval || null, status: sub.status });
       } catch (err) {
         console.error('Webhook error on subscription.updated:', err);
       }
       break;
     }
-      break;
     case 'customer.subscription.deleted': {
       const sub = event.data.object;
-      console.log('Subscription cancelled:', sub.id);
+      console.log('⚠️ Subscription cancelled:', sub.id);
       try {
-        await upsertSubscription({ user_id: null, stripe_subscription_id: sub.id, plan: null, billing_period: null, status: 'canceled' });
+        const userRow = await findUserByStripeCustomer(sub.customer);
+        if (userRow && transporter) {
+          await transporter.sendMail({
+            from: process.env.SMTP_FROM || process.env.SMTP_USER,
+            to: userRow.email,
+            subject: 'Votre abonnement a été annulé',
+            html: `<p>Nous avons enregistré l'annulation de votre abonnement.</p>
+<p>Vos données restent sauvegardées. N'hésitez pas à vous réabonner à tout moment.</p>`,
+          });
+        }
+        await upsertSubscription({ user_id: userRow?.id || null, stripe_subscription_id: sub.id, plan: null, billing_period: null, status: 'canceled' });
       } catch (err) {
         console.error('Webhook error on subscription.deleted:', err);
       }
       break;
     }
-      break;
     default:
       // other events
       console.log(`Unhandled event type ${event.type}`);
@@ -576,7 +635,7 @@ app.get('/api/analysis/advanced', authenticate, async (req, res) => {
   return res.json({ report: { phrases: ['Projection long terme', 'Scénarios avancés', 'Alertes similaires'], timestamp: Date.now() } });
 });
 
-// Simple alert runner (in-memory interval): in production this should be replaced with a job queue
+// Simple alert runner (in-memory interval): sends professional alert emails
 setInterval(async () => {
   const pending = await alertsPending();
   for (const a of pending) {
@@ -584,16 +643,56 @@ setInterval(async () => {
     const matchFound = Math.random() < 0.15; // 15% chance of a fake match
     if (!matchFound) continue;
     try {
-      const subject = `Nouvelle alerte match: ${a.criteria}`;
-      const text = `Bonjour, une nouvelle annonce correspond à vos critères: ${a.criteria}`;
+      const subject = `🏠 Nouvelle alerte match: ${a.criteria}`;
+      const html = `
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;">
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 8px 8px 0 0; text-align: center;">
+    <h1 style="margin: 0; font-size: 28px;">🏠 Nouvelle alerte immobilière</h1>
+  </div>
+  
+  <div style="background: white; padding: 30px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Bonjour,</p>
+    
+    <p style="font-size: 16px; color: #555; margin-bottom: 20px;">
+      Une nouvelle annonce correspond à vos critères de recherche:
+    </p>
+    
+    <div style="background: #f9f9f9; border-left: 4px solid #667eea; padding: 15px; margin: 20px 0; border-radius: 4px;">
+      <p style="margin: 0; font-size: 18px; font-weight: bold; color: #333;">Critères: <span style="color: #667eea;">${a.criteria}</span></p>
+    </div>
+    
+    <p style="font-size: 14px; color: #888; margin: 20px 0;">
+      Alerte envoyée: ${new Date().toLocaleString('fr-FR')}
+    </p>
+    
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+      <p style="font-size: 12px; color: #999; margin: 0;">
+        Vous recevez cet email car vous avez une alerte active pour "${a.criteria}". 
+        <a href="${process.env.FRONTEND_URL}/alerts?id=${a.id}" style="color: #667eea; text-decoration: none;">Gérer vos alertes</a>
+      </p>
+    </div>
+  </div>
+  
+  <p style="text-align: center; font-size: 12px; color: #999; margin-top: 20px;">
+    © 2025 Real Estate AI. Tous droits réservés.
+  </p>
+</div>
+      `;
+      
       if (transporter) {
-        await transporter.sendMail({ from: process.env.SMTP_FROM || 'no-reply@realestate-ai.local', to: a.email, subject, text });
+        await transporter.sendMail({
+          from: process.env.SMTP_FROM || process.env.SMTP_USER,
+          to: a.email,
+          subject,
+          html,
+        });
+        console.log(`✓ Alert email sent to ${a.email} for criteria: ${a.criteria}`);
       } else {
-        console.log(`ALERT EMAIL (to ${a.email}): ${subject} — ${text}`);
+        console.log(`ALERT EMAIL (to ${a.email}): ${subject}`);
       }
       await incrementAlertEmailCount(a.id);
     } catch (err) {
-      console.error('Error sending alert email', err);
+      console.error('Error sending alert email', err.message);
     }
   }
 }, 30 * 1000);

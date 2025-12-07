@@ -7,6 +7,8 @@
 export type PlanName = "premium" | "pro";
 export type BillingPeriod = "month" | "year";
 
+const API_URL = import.meta.env.VITE_API_URL || (typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.hostname}:3001` : 'http://localhost:3001');
+
 export async function startCheckout(plan: PlanName, billing: BillingPeriod) {
   if (!["premium", "pro"].includes(plan)) {
     console.error("Invalid plan", plan);
@@ -23,7 +25,7 @@ export async function startCheckout(plan: PlanName, billing: BillingPeriod) {
     const headers: Record<string,string> = { "Content-Type": "application/json" };
     if (token) headers['Authorization'] = `Bearer ${token}`;
 
-    const res = await fetch("http://localhost:4242/api/create-checkout-session", {
+    const res = await fetch(`${API_URL}/api/create-checkout-session`, {
       method: "POST",
       headers,
       body: JSON.stringify({ plan, billing }),
