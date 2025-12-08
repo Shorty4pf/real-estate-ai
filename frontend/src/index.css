@@ -1732,30 +1732,25 @@ input:focus {
 
 /* Mobile landscape et tablettes portrait (jusqu'à 900px) */
 @media (max-width: 900px) {
-  /* Layout global */
-  .hero-grid,
-  .analyzer-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2rem;
+  /* MOBILE APP-LIKE LAYOUT 9:16 */
+  .site {
+    background: #050509;
   }
   
-  .hero-right {
-    order: -1;
+  /* Navigation mobile compacte et fixe */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0.8rem 1rem;
+    gap: 0.5rem;
+    background: rgba(5, 5, 9, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(68, 255, 210, 0.1);
   }
   
-  .steps-grid,
-  .faq-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  
-  /* Navigation mobile */
   .nav-links {
     display: none;
-  }
-  
-  .nav {
-    padding: 1rem 1.5rem;
-    gap: 1rem;
   }
   
   .nav-right {
@@ -1763,118 +1758,319 @@ input:focus {
   }
   
   .nav-login {
-    display: none; /* Cache l'email sur mobile */
+    display: none;
   }
   
   .nav-cta {
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
   }
   
-  /* Hero mobile */
+  /* Hero - Layout vertical app-style */
   .hero {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1rem;
+    min-height: auto;
+  }
+  
+  .hero-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .hero-right {
+    order: -1;
   }
   
   .hero h1 {
-    font-size: 2rem;
+    font-size: 1.75rem;
     line-height: 1.2;
+    margin-bottom: 0.8rem;
   }
   
   .hero-subtitle {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
   }
   
   .hero-cta-row {
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 0.6rem;
   }
   
   .hero-cta-row button {
     width: 100%;
-    padding: 0.8rem 1.5rem;
-  }
-  
-  .hero-kpis {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 0.8rem;
-  }
-  
-  .kpi-value {
-    font-size: 1.5rem;
-  }
-  
-  /* Mockup mobile */
-  .mockup-card {
-    padding: 1.5rem;
-  }
-  
-  .mockup-title {
-    font-size: 1rem;
-  }
-  
-  .mockup-row {
+    padding: 0.75rem 1rem;
     font-size: 0.9rem;
   }
   
-  /* Section analyzer */
+  /* KPIs - Cards horizontales compactes */
+  .hero-kpis {
+    display: flex;
+    gap: 0.6rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-kpis::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .kpi-card {
+    flex-shrink: 0;
+    width: 150px;
+    padding: 0.8rem;
+  }
+  
+  .kpi-label {
+    font-size: 0.75rem;
+  }
+  
+  .kpi-value {
+    font-size: 1.3rem;
+  }
+  
+  /* Mockup - Carte compacte */
+  .mockup-card {
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .mockup-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .mockup-row {
+    font-size: 0.85rem;
+    padding: 0.5rem 0;
+  }
+  
+  .mockup-number {
+    font-size: 0.9rem !important;
+  }
+  
+  /* Steps - Layout vertical avec cards réduites */
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .step-card {
+    padding: 1.2rem;
+  }
+  
+  .step-badge {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+  
+  .step-card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .step-card p {
+    font-size: 0.85rem;
+  }
+  
+  /* Sections - Padding réduit */
   .section {
-    padding: 3rem 1.5rem;
+    padding: 2rem 1rem;
+  }
+  
+  .section-header {
+    margin-bottom: 1.5rem;
   }
   
   .section-header h2 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+    line-height: 1.3;
   }
   
-  /* Formulaire mobile */
-  .form-card {
-    padding: 1.5rem;
+  .eyebrow {
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
   }
   
-  .form-row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-  }
-  
-  input, button {
-    font-size: 16px !important; /* Empêche le zoom sur iOS */
-  }
-  
-  /* Pricing mobile */
-  .pricing-grid {
-    grid-template-columns: minmax(0, 1fr);
+  /* Analyzer - Layout vertical app */
+  .analyzer-grid {
+    display: flex;
+    flex-direction: column-reverse;
     gap: 1.5rem;
   }
   
+  /* Formulaire - Style app compacte */
+  .form-card {
+    padding: 1.2rem;
+  }
+  
+  .form-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-caption {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .form-card label {
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .form-card input {
+    font-size: 16px !important;
+    padding: 0.7rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  
+  .form-bottom-note {
+    font-size: 0.75rem;
+    margin-top: -0.5rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .primary-cta {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 0.95rem;
+  }
+  
+  /* Summary card - Version compacte */
+  .summary-card {
+    padding: 1.2rem;
+  }
+  
+  .summary-metrics {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  .metric-score {
+    font-size: 1.5rem !important;
+  }
+  
+  /* Pricing - Layout vertical app */
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  
+  .pricing-copy {
+    padding: 0 0.5rem;
+  }
+  
+  .pricing-copy h2 {
+    font-size: 1.5rem;
+  }
+  
+  .pricing-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .pricing-note,
+  .pricing-security {
+    font-size: 0.8rem;
+  }
+  
   .plan-card {
-    padding: 1.5rem;
+    padding: 1.3rem;
+  }
+  
+  .plan-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .plan-description {
+    font-size: 0.85rem;
   }
   
   .plan-price {
-    font-size: 2.5rem;
+    font-size: 2rem;
+  }
+  
+  .price-unit {
+    font-size: 1rem;
+  }
+  
+  .plan-alt {
+    font-size: 0.8rem;
+  }
+  
+  .plan-features {
+    font-size: 0.85rem;
+  }
+  
+  .plan-features li {
+    padding: 0.5rem 0;
   }
   
   .plan-cta-group {
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
   }
   
   .plan-cta-primary,
   .plan-cta-secondary {
     width: 100%;
+    padding: 0.7rem;
+    font-size: 0.85rem;
+  }
+  
+  /* FAQ - Cards compactes */
+  .faq-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .faq-item {
+    padding: 1.2rem;
+  }
+  
+  .faq-item h3 {
+    font-size: 1rem;
+  }
+  
+  .faq-item p {
+    font-size: 0.85rem;
   }
   
   /* Auth page mobile */
   .auth-container {
-    padding: 1.5rem;
+    padding: 1rem;
   }
   
   .auth-card {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1.2rem;
   }
   
   .auth-title {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+  }
+  
+  .auth-subtitle {
+    font-size: 0.85rem;
+  }
+  
+  .auth-card input {
+    font-size: 16px !important;
+    padding: 0.7rem;
+  }
+  
+  .auth-card button {
+    padding: 0.75rem;
   }
   
   /* Legal modal mobile */
@@ -1882,149 +2078,434 @@ input:focus {
     max-width: 95vw;
     max-height: 90vh;
     margin: 1rem;
+    border-radius: 1rem;
   }
   
   .legal-content {
-    padding: 0 1.5rem 1.5rem 1.5rem;
+    padding: 0 1.2rem 1.2rem 1.2rem;
   }
   
   .legal-content h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+  }
+  
+  .legal-content h2 {
+    font-size: 1.1rem;
+  }
+  
+  .legal-content p,
+  .legal-content li {
+    font-size: 0.85rem;
+  }
+  
+  /* Footer mobile */
+  .footer {
+    padding: 1.5rem 1rem;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    gap: 0.8rem;
+    font-size: 0.8rem;
   }
   
   /* Alerts mobile */
   .alerts-manager {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1rem;
   }
   
   .alerts-form {
-    padding: 1.5rem;
+    padding: 1.2rem;
   }
   
   .alert-card {
     flex-direction: column;
-    padding: 1.2rem;
+    padding: 1rem;
+    gap: 0.8rem;
+  }
+  
+  .alert-delete-btn {
+    width: 100%;
   }
 }
 
 /* Mobile portrait (jusqu'à 640px) */
 @media (max-width: 640px) {
-  /* Typography mobile */
-  .hero h1 {
-    font-size: 1.75rem;
-  }
+  /* ULTRA COMPACT MOBILE APP 9:16 */
   
-  .section-header h2 {
-    font-size: 1.5rem;
-  }
-  
-  .eyebrow {
-    font-size: 0.75rem;
-  }
-  
-  /* Logo mobile */
-  .logo-svg {
-    width: 24px;
-    height: 24px;
-  }
-  
-  .logo-text {
-    font-size: 0.85rem;
-  }
-  
-  /* KPIs mobile */
-  .hero-kpis {
-    grid-template-columns: 1fr;
-  }
-  
-  .kpi-card {
-    padding: 0.8rem;
-  }
-  
-  /* Steps cards mobile */
-  .step-card {
-    padding: 1.5rem;
-  }
-  
-  .step-badge {
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
-  }
-  
-  /* Form mobile optimizations */
-  .form-title {
-    font-size: 1.1rem;
-  }
-  
-  label {
-    font-size: 0.9rem;
-  }
-  
-  input {
-    padding: 0.75rem;
-  }
-  
-  /* Premium locked section mobile */
-  .premium-locked-section {
-    padding: 1rem !important;
-  }
-  
-  /* FAQ mobile */
-  .faq-item h3 {
-    font-size: 1rem;
-  }
-  
-  .faq-item p {
-    font-size: 0.9rem;
-  }
-  
-  /* Footer mobile */
-  .footer {
-    padding: 2rem 1.5rem;
-  }
-  
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 1.5rem;
-  }
-  
-  .footer-links {
-    justify-content: center;
-  }
-  
-  /* Results summary mobile */
-  .summary-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .metric-score {
-    font-size: 2rem;
-  }
-}
-
-/* Petits mobiles (jusqu'à 375px) */
-@media (max-width: 375px) {
+  /* Typography ultra mobile */
   .hero h1 {
     font-size: 1.5rem;
+    line-height: 1.25;
   }
   
   .section-header h2 {
     font-size: 1.3rem;
   }
   
-  .plan-price {
-    font-size: 2rem;
+  .eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
   }
   
+  /* Logo ultra compact */
+  .logo-svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .logo-text {
+    font-size: 0.8rem;
+  }
+  
+  /* Navigation ultra compacte */
+  .nav {
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .nav-cta {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.75rem;
+  }
+  
+  /* Hero ultra compact */
+  .hero {
+    padding: 1rem 0.8rem;
+  }
+  
+  .hero h1 {
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  
+  /* KPIs - Scroll horizontal optimisé */
+  .hero-kpis {
+    margin: 0 -0.8rem 1rem -0.8rem;
+    padding: 0 0.8rem;
+  }
+  
+  .kpi-card {
+    width: 130px;
+    padding: 0.7rem;
+  }
+  
+  .kpi-label {
+    font-size: 0.7rem;
+  }
+  
+  .kpi-value {
+    font-size: 1.2rem;
+  }
+  
+  /* Mockup ultra compact */
   .mockup-card {
     padding: 1rem;
   }
   
-  .chrome-card {
+  .mockup-title {
+    font-size: 0.85rem;
+  }
+  
+  .mockup-row {
+    font-size: 0.8rem;
+    padding: 0.4rem 0;
+  }
+  
+  .mockup-row span:first-child {
+    font-size: 0.75rem;
+  }
+  
+  .mockup-number {
+    font-size: 0.85rem !important;
+  }
+  
+  /* Steps ultra compact */
+  .step-card {
     padding: 1rem;
+  }
+  
+  .step-badge {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .step-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .step-card p {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  
+  /* Sections ultra compact */
+  .section {
+    padding: 1.5rem 0.8rem;
+  }
+  
+  .section-header {
+    margin-bottom: 1.2rem;
+  }
+  
+  /* Formulaire ultra compact app-style */
+  .form-card {
+    padding: 1rem;
+    border-radius: 0.8rem;
+  }
+  
+  .form-title {
+    font-size: 1rem;
+  }
+  
+  .form-caption {
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+  
+  .form-card label {
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .form-card input {
+    padding: 0.65rem;
+    margin-bottom: 0.7rem;
+    border-radius: 0.5rem;
+  }
+  
+  .form-bottom-note {
+    font-size: 0.7rem;
+    margin-top: -0.4rem;
+    margin-bottom: 0.7rem;
+  }
+  
+  .primary-cta {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    border-radius: 0.6rem;
+  }
+  
+  /* Summary ultra compact */
+  .summary-card {
+    padding: 1rem;
+  }
+  
+  .summary-metrics {
+    gap: 0.6rem;
+  }
+  
+  .summary-metrics > div {
+    padding: 0.6rem;
+  }
+  
+  .metric-score {
+    font-size: 1.3rem !important;
+  }
+  
+  /* Pricing ultra compact */
+  .pricing-copy {
+    padding: 0;
+  }
+  
+  .pricing-copy h2 {
+    font-size: 1.3rem;
+    line-height: 1.3;
+  }
+  
+  .pricing-subtitle {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  
+  .pricing-note {
+    font-size: 0.75rem;
+    padding: 0.6rem;
+  }
+  
+  .pricing-security {
+    font-size: 0.7rem;
+  }
+  
+  .plan-card {
+    padding: 1.1rem;
+    border-radius: 0.9rem;
+  }
+  
+  .plan-badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.7rem;
+  }
+  
+  .plan-header h3 {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+  
+  .plan-description {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  
+  .plan-price {
+    font-size: 1.8rem;
+  }
+  
+  .price-unit {
+    font-size: 0.9rem;
+  }
+  
+  .plan-alt {
+    font-size: 0.75rem;
+  }
+  
+  .plan-features {
+    font-size: 0.8rem;
+    gap: 0.3rem;
+  }
+  
+  .plan-features li {
+    padding: 0.4rem 0 0.4rem 1.5rem;
+  }
+  
+  .plan-cta-primary,
+  .plan-cta-secondary {
+    padding: 0.65rem;
+    font-size: 0.8rem;
+    border-radius: 0.6rem;
+  }
+  
+  /* FAQ ultra compact */
+  .faq-item {
+    padding: 1rem;
+  }
+  
+  .faq-item h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .faq-item p {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  
+  /* Auth ultra compact */
+  .auth-container {
+    padding: 0.8rem;
+  }
+  
+  .auth-card {
+    padding: 1.3rem 1rem;
+  }
+  
+  .auth-title {
+    font-size: 1.2rem;
+  }
+  
+  .auth-subtitle {
+    font-size: 0.8rem;
+  }
+  
+  .auth-card label {
+    font-size: 0.8rem;
+  }
+  
+  .auth-card input {
+    padding: 0.65rem;
+  }
+  
+  .auth-card button {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+  
+  /* Footer ultra compact */
+  .footer {
+    padding: 1.2rem 0.8rem;
+  }
+  
+  .footer-content {
+    font-size: 0.75rem;
+    gap: 0.5rem;
+  }
+  
+  /* Legal modal ultra compact */
+  .legal-modal {
+    max-width: 100vw;
+    max-height: 95vh;
+    margin: 0.5rem;
+    border-radius: 0.8rem;
+  }
+  
+  .legal-content {
+    padding: 0 1rem 1rem 1rem;
+  }
+  
+  .legal-content h1 {
+    font-size: 1.2rem;
+  }
+  
+  .legal-content h2 {
+    font-size: 1rem;
+  }
+  
+  .legal-content p,
+  .legal-content li {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  
+  /* Alerts ultra compact */
+  .alerts-manager {
+    padding: 1.2rem 0.8rem;
+  }
+  
+  .alerts-form {
+    padding: 1rem;
+  }
+  
+  .alerts-form input {
+    padding: 0.65rem;
+  }
+  
+  .alert-card {
+    padding: 0.9rem;
+  }
+  
+  .alert-card-info h3 {
+    font-size: 0.9rem;
+  }
+  
+  .alert-card-info p {
+    font-size: 0.75rem;
+  }
+  
+  .alert-delete-btn {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Très petits écrans (jusqu'à 375px) */
+@media (max-width: 375px) {
+  .hero h1 {
+    font-size: 1.3rem;
+  }
+  
+  .kpi-card {
+    width: 120px;
+  }
+  
+  .plan-price {
+    font-size: 1.6rem;
   }
 }
 
