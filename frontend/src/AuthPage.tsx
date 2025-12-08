@@ -21,15 +21,29 @@ export const AuthPage = () => {
     setErrorMsg(null);
 
     try {
+      // Wake up backend first if it's asleep (Render free tier)
+      try {
+        await fetch(`${API_BASE_URL}/api/health`, { method: 'GET' });
+      } catch {
+        // Silently continue even if health check fails
+      }
+
       const endpoint = isLogin ? "/api/login" : "/api/signup";
+      
+      // Add timeout of 60 seconds for slow backend startup on free tier
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 60000);
+      
       const res = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
+        signal: controller.signal,
       });
 
+      clearTimeout(timeoutId);
       const data = await res.json();
 
       if (!res.ok) {
@@ -43,11 +57,17 @@ export const AuthPage = () => {
       }
 
       window.location.href = "/";
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setErrorMsg(
-        "Erreur réseau. Vérifiez votre connexion internet ou réessayez plus tard."
-      );
+      if (err.name === 'AbortError') {
+        setErrorMsg(
+          "Le serveur prend trop de temps à répondre. Réessayez dans quelques secondes."
+        );
+      } else {
+        setErrorMsg(
+          "Connexion au serveur... Si le backend est en veille, cela peut prendre jusqu'à 50 secondes. Veuillez patienter ou réessayer."
+        );
+      }
       setLoading(false);
     }
   }
