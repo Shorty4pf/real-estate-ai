@@ -30,7 +30,7 @@ const db = new Low(adapter);
 // ensure data file exists and has default structure before server starts
 async function initDb() {
   await db.read();
-db.data = db.data || { users: [], subscriptions: [], alerts: [], deals: [] };
+  db.data = db.data || { users: [], subscriptions: [], alerts: [], deals: [] };
   await db.write();
 }
 
@@ -769,5 +769,3 @@ initDb().then(() => {
   console.error('Failed to initialize database:', err);
   process.exit(1);
 });
-// Force redeploy
-// Rebuild trigger
