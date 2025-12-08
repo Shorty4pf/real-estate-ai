@@ -72,6 +72,24 @@ export default function App() {
   // État pour les pages légales
   const [legalPage, setLegalPage] = useState<'cgu' | 'privacy' | 'cookies' | 'mentions' | null>(null);
 
+  // Keep backend awake on Render free tier
+  useEffect(() => {
+    const keepAlive = async () => {
+      try {
+        await fetch(`${API_BASE_URL}/api/health`, { method: 'GET' });
+      } catch (err) {
+        // Silently fail - just trying to keep it awake
+      }
+    };
+
+    // Ping every 10 minutes
+    const interval = setInterval(keepAlive, 10 * 60 * 1000);
+    // Also ping immediately on load
+    keepAlive();
+    
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     async function loadMe() {
       const t = token || localStorage.getItem("token");

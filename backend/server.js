@@ -18,8 +18,14 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Health check endpoint - fast response
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: Date.now() });
+});
+
+// Simple root endpoint
+app.get("/", (req, res) => {
+  res.json({ message: "Real Estate AI Backend" });
 });
 
 
