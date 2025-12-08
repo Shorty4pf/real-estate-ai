@@ -38,12 +38,6 @@ function hasActivePro(me: typeof initialMe): boolean {
   ) || false;
 }
 
-function hasAnyActiveSubscription(me: typeof initialMe): boolean {
-  return me?.subscriptions?.some(
-    (sub) => ['active', 'trialing'].includes(sub.status)
-  ) || false;
-}
-
 const initialMe: { 
   user?: { id: number; email: string; stripe_customer_id: string | null; created_at: string }; 
   subscriptions?: Array<{ id: number; user_id: number; stripe_subscription_id: string; plan: string; billing_period: string; status: string; created_at: string; updated_at: string }>
@@ -482,25 +476,30 @@ export default function App() {
                 <button
                   className="primary-cta primary-chrome"
                   onClick={() => scrollToId("analyzer")}
+                  style={{ fontSize: "1.05rem", padding: "0.9rem 2rem" }}
                 >
-                  Analyser mon premier deal (gratuit)
+                  ⚡ Analyser gratuitement maintenant
                 </button>
                 <button
                   className="secondary-ghost"
                   onClick={() => scrollToId("pricing")}
                 >
-                  Voir les plans Premium →
+                  Plans Premium dès 14,99€ →
                 </button>
               </div>
 
               <div className="hero-kpis">
                 <div className="kpi-card kpi-chrome">
-                  <p className="kpi-label">✅ Utilisateurs actifs</p>
-                  <p className="kpi-value">2,847+</p>
+                  <p className="kpi-label">👥 Investisseurs actifs</p>
+                  <p className="kpi-value">2 847+</p>
                 </div>
                 <div className="kpi-card kpi-chrome">
-                  <p className="kpi-label">⚡ Temps/analyse</p>
+                  <p className="kpi-label">⚡ Vitesse d'analyse</p>
                   <p className="kpi-value">7 sec</p>
+                </div>
+                <div className="kpi-card kpi-chrome">
+                  <p className="kpi-label">💰 Économie moyenne</p>
+                  <p className="kpi-value">3h/sem</p>
                 </div>
               </div>
             </div>
@@ -508,34 +507,39 @@ export default function App() {
             {/* RIGHT : MOCKUP / STORY IMMOBILIÈRE */}
             <div className="hero-right">
               <div className="chrome-card mockup-card">
-                <p className="mockup-title">Exemple réel – T2 • Bordeaux</p>
+                <p className="mockup-title">🔥 Deal trouvé hier – T2 • Bordeaux</p>
                 <div className="mockup-body">
                   <div className="mockup-row">
-                    <span>Prix affiché</span>
+                    <span>Prix d'achat</span>
                     <span className="mockup-number">189 000 €</span>
                   </div>
                   <div className="mockup-row">
-                    <span>Loyer visé</span>
+                    <span>Loyer mensuel</span>
                     <span className="mockup-number">850 €/mois</span>
                   </div>
-                  <div className="mockup-row">
-                    <span>Score IA</span>
-                    <span className="mockup-number">87 / 100 🔥</span>
+                  <div className="mockup-row" style={{ borderTop: "1px solid rgba(68, 255, 210, 0.2)", paddingTop: "0.8rem", marginTop: "0.8rem" }}>
+                    <span><strong>Score global IA</strong></span>
+                    <span className="mockup-number" style={{ color: "#44ffd2", fontSize: "1.3rem" }}>87/100 🔥</span>
                   </div>
                   <div className="mockup-row">
                     <span>Cashflow mensuel</span>
-                    <span className="mockup-number">+214 €</span>
+                    <span className="mockup-number" style={{ color: "#44ffd2" }}>+214 €</span>
                   </div>
                   <div className="mockup-row">
                     <span>Rendement net</span>
-                    <span className="mockup-number">8,4 %</span>
+                    <span className="mockup-number">8,4%</span>
+                  </div>
+                  <div className="mockup-row">
+                    <span style={{ fontSize: "0.85rem", opacity: 0.8 }}>Verdict</span>
+                    <span style={{ fontSize: "0.85rem", color: "#44ffd2" }}>Excellent deal ✓</span>
                   </div>
 
                   <button
                     className="mockup-cta"
                     onClick={() => scrollToId("analyzer")}
+                    style={{ marginTop: "1rem" }}
                   >
-                    Lancer le même calcul sur ton bien →
+                    ⚡ Analyser votre bien maintenant
                   </button>
                 </div>
               </div>
@@ -900,9 +904,9 @@ export default function App() {
             {/* Formulaire à droite */}
             <div>
               <div className="chrome-card form-card">
-                <p className="form-title">🔍 Analyser un bien</p>
+                <p className="form-title">⚡ Analyse Gratuite Instantanée</p>
                 <p className="form-caption">
-                  Colle les chiffres réels du bien que tu regardes. 30 secondes max.
+                  Entrez les chiffres de votre bien. Résultat en 7 secondes. 100% gratuit.
                 </p>
 
                 <label>Prix d’achat (€)</label>

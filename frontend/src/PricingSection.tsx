@@ -34,19 +34,19 @@ export const PricingSection: FC = () => {
     <div className="pricing-shell">
       {/* Bloc texte centralisé */}
       <div className="pricing-copy">
-        <p className="eyebrow">Plans optimisés pour gagner du temps & de l'argent</p>
-        <h2>Arrête l'Excel. Maîtrise tes deals en 7 secondes.</h2>
+        <p className="eyebrow">💰 Plans Premium • Essai gratuit illimité sans CB</p>
+        <h2>Passez à la vitesse supérieure. Économisez 3h/semaine.</h2>
         <p className="pricing-subtitle">
-          2,847+ investisseurs nous font confiance. Essai gratuit illimité. Pas de CB requise.
-          Annule à tout moment. Zéro piège.
+          <strong>2 847 investisseurs</strong> utilisent nos plans Premium pour analyser plus vite, 
+          économiser du temps et sécuriser leurs deals. <strong>Annulation en 1 clic. Sans engagement.</strong>
         </p>
 
         <p className="pricing-note">
-          💡 <strong>Astuce</strong> : Les utilisateurs Premium économisent en moyenne 3h/semaine sur l'analyse.
-          Les Pro trouvent leurs deals 48h avant la concurrence grâce aux alertes.
+          💡 <strong>Résultats réels</strong> : Premium = -3h/semaine d'analyse. 
+          Pro = deals trouvés 48h avant la concurrence (alertes temps réel).
         </p>
         <p className="pricing-security">
-          🔒 Sécurisé par Stripe • Paiement en 1 clic • CB / Apple Pay / Google Pay / Virement.
+          🔒 Paiement 100% sécurisé Stripe • CB • Apple Pay • Google Pay • Virement SEPA
         </p>
       </div>
 
@@ -55,11 +55,11 @@ export const PricingSection: FC = () => {
         {/* PREMIUM */}
         <div className="plan-card plan-premium">
           <div className="plan-header">
-            <span className="plan-badge">Premium</span>
-            <h3>Pour investisseurs réguliers.</h3>
+            <span className="plan-badge">✨ Premium</span>
+            <h3>Investisseurs réguliers (5-10 biens/mois)</h3>
             <p className="plan-description">
-              Vous analysez 5-10 biens par mois. Vous cherchez la fiabilité et
-              la clarté pour chaque décision. Maîtrisez vos frais de gestion, garanties et impôts.
+              Économisez 3h/semaine avec les calculateurs automatiques.
+              Frais de gestion, garanties, impôts, prélèvements sociaux → tout est calculé pour vous.
             </p>
           </div>
 
@@ -91,14 +91,14 @@ export const PricingSection: FC = () => {
               className="plan-cta-primary"
               onClick={() => requireAuthAndCheckout("premium", "month")}
             >
-              Commencer à 14,99€/mois
+              ⚡ Commencer maintenant – 14,99€/mois
             </button>
             <button
               type="button"
               className="plan-cta-secondary"
               onClick={() => requireAuthAndCheckout("premium", "year")}
             >
-              Économiser 27€/an
+              💰 Payer annuel (économisez 27€/an)
             </button>
           </div>
         </div>
@@ -106,11 +106,11 @@ export const PricingSection: FC = () => {
         {/* PRO */}
         <div className="plan-card plan-pro">
           <div className="plan-header">
-            <span className="plan-badge badge-pro">Pro</span>
-            <h3>Pour professionnels & courtiers.</h3>
+            <span className="plan-badge badge-pro">🚀 Pro</span>
+            <h3>Professionnels & courtiers (20+ biens/mois)</h3>
             <p className="plan-description">
-              Vous courrez après des biens avant la concurrence. Les alertes
-              temps réel + les analyses avancées vous donnent l'avantage.
+              Trouvez les deals 48h avant la concurrence avec les alertes temps réel.
+              Analyses avancées, scénarios multiples, organisation de portefeuille.
             </p>
           </div>
 
@@ -148,14 +148,14 @@ export const PricingSection: FC = () => {
               className="plan-cta-primary plan-cta-pro"
               onClick={() => requireAuthAndCheckout("pro", "month")}
             >
-              Activer à 27,99€/mois
+              🚀 Passer Pro maintenant – 27,99€/mois
             </button>
             <button
               type="button"
               className="plan-cta-secondary"
               onClick={() => requireAuthAndCheckout("pro", "year")}
             >
-              Meilleur prix : 99,99€/an
+              💎 Plan annuel (économisez 235€/an)
             </button>
           </div>
         </div>
