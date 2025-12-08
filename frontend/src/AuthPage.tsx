@@ -46,7 +46,7 @@ export const AuthPage = () => {
     } catch (err) {
       console.error(err);
       setErrorMsg(
-        "Erreur réseau. Vérifiez que le backend (port 4242) est bien lancé."
+        "Erreur réseau. Vérifiez votre connexion internet ou réessayez plus tard."
       );
       setLoading(false);
     }
