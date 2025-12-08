@@ -1754,12 +1754,14 @@ input:focus {
     position: sticky;
     top: 0;
     z-index: 100;
-    padding: 0.6rem 0.8rem;
-    gap: 0.4rem;
-    background: rgba(5, 5, 9, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(68, 255, 210, 0.1);
+    padding: 0.75rem 1rem;
+    gap: 0.5rem;
+    background: rgba(5, 5, 9, 0.92);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 0.5px solid rgba(68, 255, 210, 0.15);
     max-width: 100vw;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
   }
   
   .nav-links {
@@ -1782,7 +1784,7 @@ input:focus {
   
   /* Hero - Layout vertical app-style */
   .hero {
-    padding: 1rem 0.8rem;
+    padding: 1.5rem 1rem;
     min-height: auto;
     max-width: 100vw;
     overflow-x: hidden;
@@ -1791,7 +1793,7 @@ input:focus {
   .hero-grid {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
     max-width: 100%;
   }
   
@@ -1801,37 +1803,44 @@ input:focus {
   }
   
   .hero h1 {
-    font-size: 1.5rem;
-    line-height: 1.2;
-    margin-bottom: 0.6rem;
+    font-size: 1.75rem;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
   
   .hero-subtitle {
-    font-size: 0.85rem;
-    margin-bottom: 0.8rem;
-    line-height: 1.4;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    color: rgba(245, 245, 247, 0.85);
   }
   
   .hero-cta-row {
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 1rem;
   }
   
   .hero-cta-row button {
     width: 100%;
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
+    padding: 1rem 1.5rem;
+    font-size: 0.95rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 48px;
   }
   
   /* KPIs - Cards horizontales compactes */
   .hero-kpis {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.75rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    margin: 0 -0.8rem 0.8rem -0.8rem;
-    padding: 0 0.8rem;
+    margin: 0 -1rem 1rem -1rem;
+    padding: 0 1rem;
   }
   
   .hero-kpis::-webkit-scrollbar {
@@ -1840,85 +1849,114 @@ input:focus {
   
   .kpi-card {
     flex-shrink: 0;
-    width: 120px;
-    padding: 0.6rem;
-    min-width: 120px;
+    width: 140px;
+    padding: 0.75rem;
+    min-width: 140px;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
   }
   
   .kpi-label {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
+    opacity: 0.7;
+    margin-bottom: 0.3rem;
   }
   
   .kpi-value {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
   
   /* Mockup - Carte compacte */
   .mockup-card {
-    padding: 0.9rem;
-    margin-bottom: 0.8rem;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
     max-width: 100%;
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 0.5px solid rgba(68, 255, 210, 0.15);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   }
   
   .mockup-title {
-    font-size: 0.8rem;
-    margin-bottom: 0.6rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
   }
   
   .mockup-row {
-    font-size: 0.75rem;
-    padding: 0.4rem 0;
+    font-size: 0.8rem;
+    padding: 0.5rem 0;
   }
   
   .mockup-number {
-    font-size: 0.8rem !important;
+    font-size: 0.85rem !important;
+    font-weight: 600;
   }
   
   /* Steps - Layout vertical avec cards réduites */
   .steps-grid {
     grid-template-columns: 1fr;
-    gap: 0.8rem;
+    gap: 1rem;
   }
   
   .step-card {
-    padding: 0.9rem;
+    padding: 1.25rem;
     max-width: 100%;
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
   }
   
   .step-badge {
-    width: 30px;
-    height: 30px;
-    font-size: 0.8rem;
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
   }
   
   .step-card h3 {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
   }
   
   .step-card p {
-    font-size: 0.75rem;
-    line-height: 1.4;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(245, 245, 247, 0.85);
   }
   
   /* Sections - Padding réduit */
   .section {
-    padding: 1.5rem 0.8rem;
+    padding: 2rem 1rem;
     max-width: 100vw;
     overflow-x: hidden;
   }
   
   .section-header {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
   
   .section-header h2 {
-    font-size: 1.3rem;
-    line-height: 1.3;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
   
   .eyebrow {
-    font-size: 0.65rem;
-    margin-bottom: 0.4rem;
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.7;
   }
   
   /* Analyzer - Layout vertical app */
@@ -1930,31 +1968,48 @@ input:focus {
   
   /* Formulaire - Style app compacte */
   .form-card {
-    padding: 0.9rem;
+    padding: 1.25rem;
     max-width: 100%;
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 0.5px solid rgba(68, 255, 210, 0.15);
   }
   
   .form-title {
-    font-size: 0.95rem;
-    margin-bottom: 0.4rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
   }
   
   .form-caption {
-    font-size: 0.7rem;
-    margin-bottom: 0.8rem;
-    line-height: 1.3;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+    color: rgba(245, 245, 247, 0.7);
   }
   
   .form-card label {
-    font-size: 0.75rem;
-    margin-bottom: 0.3rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
   }
   
   .form-card input {
     font-size: 16px !important;
-    padding: 0.6rem;
-    margin-bottom: 0.6rem;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
     max-width: 100%;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+  }
+  
+  .form-card input:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(68, 255, 210, 0.4);
+    outline: none;
   }
   
   .form-row {
@@ -1963,15 +2018,20 @@ input:focus {
   }
   
   .form-bottom-note {
-    font-size: 0.65rem;
-    margin-top: -0.4rem;
-    margin-bottom: 0.6rem;
+    font-size: 0.7rem;
+    margin-top: -0.5rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.6;
   }
   
   .primary-cta {
     width: 100%;
-    padding: 0.7rem;
-    font-size: 0.85rem;
+    padding: 1rem 1.5rem;
+    font-size: 0.95rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    min-height: 48px;
+    margin-top: 0.5rem;
   }
   
   /* Summary card - Version compacte */
@@ -1992,7 +2052,7 @@ input:focus {
   /* Pricing - Layout vertical app */
   .pricing-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.25rem;
   }
   
   .pricing-copy {
@@ -2000,64 +2060,78 @@ input:focus {
   }
   
   .pricing-copy h2 {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
   
   .pricing-subtitle {
-    font-size: 0.8rem;
-    line-height: 1.4;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: rgba(245, 245, 247, 0.85);
   }
   
   .pricing-note,
   .pricing-security {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
   
   .plan-card {
-    padding: 1rem;
+    padding: 1.25rem;
     max-width: 100%;
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
   }
   
   .plan-header h3 {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
+    font-weight: 600;
   }
   
   .plan-description {
-    font-size: 0.75rem;
-    line-height: 1.4;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: rgba(245, 245, 247, 0.85);
   }
   
   .plan-price {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
   
   .price-unit {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
   
   .plan-alt {
-    font-size: 0.7rem;
-  }
-  
-  .plan-features {
     font-size: 0.75rem;
   }
   
+  .plan-features {
+    font-size: 0.8rem;
+  }
+  
   .plan-features li {
-    padding: 0.4rem 0;
+    padding: 0.5rem 0;
   }
   
   .plan-cta-group {
     flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    gap: 1rem;
+    margin-top: 1.5rem;
   }
   
   .plan-cta-primary,
   .plan-cta-secondary {
     width: 100%;
-    padding: 0.6rem;
-    font-size: 0.75rem;
+    padding: 0.85rem 1.2rem;
+    font-size: 0.9rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    min-height: 48px;
   }
   
   /* FAQ - Cards compactes */

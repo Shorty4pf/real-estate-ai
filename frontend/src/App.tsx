@@ -551,7 +551,7 @@ export default function App() {
         <section id="how" className="section section-chrome">
           <div className="section-header">
             <p className="eyebrow">Deal Analyzer • Beta privée</p>
-            <h2>En 10 secondes, vois si un bien mérite ton argent.</h2>
+            <h2>Analyse automatique de votre bien</h2>
             <p className="hero-subtitle">
               Entre les chiffres réels du bien, Real Estate AI calcule
               instantanément le rendement, le cashflow et un score clair de 0 à
@@ -998,7 +998,9 @@ export default function App() {
                   </p>
                   {!(hasActivePremium(me) || hasActivePro(me)) && (
                     <div 
-                      onClick={() => scrollToId("pricing")}
+                      onClick={() => {
+                        scrollToId("pricing");
+                      }}
                       style={{
                         position: "absolute",
                         top: 0,
@@ -1011,17 +1013,25 @@ export default function App() {
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: "0.6rem",
-                        zIndex: 10
+                        zIndex: 10,
+                        transition: "background 0.2s ease"
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "rgba(5, 5, 12, 0.8)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "rgba(5, 5, 12, 0.7)";
                       }}
                     >
                       <div style={{
                         background: "rgba(68, 255, 210, 0.95)",
                         color: "#050509",
-                        padding: "0.6rem 1.2rem",
+                        padding: "0.75rem 1.5rem",
                         borderRadius: "999px",
                         fontWeight: 700,
-                        fontSize: "0.8rem",
-                        boxShadow: "0 8px 24px rgba(68, 255, 210, 0.4)"
+                        fontSize: "0.9rem",
+                        boxShadow: "0 8px 24px rgba(68, 255, 210, 0.4)",
+                        transition: "transform 0.2s ease"
                       }}>
                         Débloquer avec Premium
                       </div>
