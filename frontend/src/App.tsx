@@ -299,7 +299,7 @@ export default function App() {
           <div className="success-shell">
             <div className="chrome-card success-card">
               <div className="success-content">
-                <div className="success-icon">🔒</div>
+                <div className="success-icon"></div>
                 <h1 className="success-title">Accès Réservé au Plan Pro</h1>
                 <p className="success-subtitle">
                   Les alertes immobilières en temps réel sont exclusives au plan Pro.
@@ -478,7 +478,7 @@ export default function App() {
                   onClick={() => scrollToId("analyzer")}
                   style={{ fontSize: "1.05rem", padding: "0.9rem 2rem" }}
                 >
-                  ⚡ Analyser gratuitement maintenant
+                  Analyser gratuitement maintenant
                 </button>
                 <button
                   className="secondary-ghost"
@@ -494,11 +494,11 @@ export default function App() {
                   <p className="kpi-value">2 847+</p>
                 </div>
                 <div className="kpi-card kpi-chrome">
-                  <p className="kpi-label">⚡ Vitesse d'analyse</p>
+                  <p className="kpi-label">Vitesse d'analyse</p>
                   <p className="kpi-value">7 sec</p>
                 </div>
                 <div className="kpi-card kpi-chrome">
-                  <p className="kpi-label">💰 Économie moyenne</p>
+                  <p className="kpi-label">Économie moyenne</p>
                   <p className="kpi-value">3h/sem</p>
                 </div>
               </div>
@@ -507,7 +507,7 @@ export default function App() {
             {/* RIGHT : MOCKUP / STORY IMMOBILIÈRE */}
             <div className="hero-right">
               <div className="chrome-card mockup-card">
-                <p className="mockup-title">🔥 Deal trouvé hier – T2 • Bordeaux</p>
+                <p className="mockup-title">Deal trouvé hier – T2 • Bordeaux</p>
                 <div className="mockup-body">
                   <div className="mockup-row">
                     <span>Prix d'achat</span>
@@ -519,7 +519,7 @@ export default function App() {
                   </div>
                   <div className="mockup-row" style={{ borderTop: "1px solid rgba(68, 255, 210, 0.2)", paddingTop: "0.8rem", marginTop: "0.8rem" }}>
                     <span><strong>Score global IA</strong></span>
-                    <span className="mockup-number" style={{ color: "#44ffd2", fontSize: "1.3rem" }}>87/100 🔥</span>
+                    <span className="mockup-number" style={{ color: "#44ffd2", fontSize: "1.3rem" }}>87/100</span>
                   </div>
                   <div className="mockup-row">
                     <span>Cashflow mensuel</span>
@@ -539,7 +539,7 @@ export default function App() {
                     onClick={() => scrollToId("analyzer")}
                     style={{ marginTop: "1rem" }}
                   >
-                    ⚡ Analyser votre bien maintenant
+                    Analyser votre bien maintenant
                   </button>
                 </div>
               </div>
@@ -638,7 +638,7 @@ export default function App() {
                         }}
                       >
                         <p style={{ fontSize: "0.9rem", fontWeight: 600, color: "#44ffd2", margin: "0 0 0.8rem 0" }}>
-                          💰 Analyse Premium détaillée
+                          Analyse Premium détaillée
                         </p>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.9rem", fontSize: "0.9rem" }}>
                           <div>
@@ -690,7 +690,7 @@ export default function App() {
                       >
                         <div className="premium-blur-content" style={{ filter: "blur(4px)", pointerEvents: "none" }}>
                           <p style={{ fontSize: "0.9rem", fontWeight: 600, color: "#44ffd2", margin: "0 0 0.8rem 0" }}>
-                            💰 Analyse Premium détaillée
+                            Analyse Premium détaillée
                           </p>
                           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.9rem", fontSize: "0.9rem" }}>
                             <div>
@@ -738,7 +738,7 @@ export default function App() {
                           fontSize: "0.9rem",
                           boxShadow: "0 8px 24px rgba(68, 255, 210, 0.4)"
                         }}>
-                          🔒 Débloqué avec Premium
+                          Débloqué avec Premium
                         </div>
                       </div>
                     )}
@@ -802,7 +802,7 @@ export default function App() {
                         }}
                       >
                         <p style={{ fontSize: "0.9rem", fontWeight: 600, margin: "0 0 0.5rem 0", color: "#44ffd2" }}>
-                          🚀 Analyses avancées Pro
+                          Analyses avancées Pro
                         </p>
                         <div style={{ fontSize: "0.85rem", color: "#f5f5f7", lineHeight: "1.5" }}>
                           <p style={{ margin: "0.3rem 0" }}>• Scénarios financiers : apport variable, taux négociés, durées multiples</p>
@@ -820,26 +820,13 @@ export default function App() {
                       </div>
                     ) : (
                       <div 
-                        onClick={() => scrollToId("pricing")}
                         style={{ 
                           marginTop: "1.3rem", 
                           padding: "1.4rem", 
                           borderRadius: "1rem", 
                           border: "2px solid rgba(68, 255, 210, 0.3)",
                           background: "linear-gradient(135deg, rgba(68, 255, 210, 0.08), rgba(5, 5, 12, 0.95))",
-                          boxShadow: "0 8px 24px rgba(68, 255, 210, 0.15)",
-                          cursor: "pointer",
-                          transition: "all 0.2s ease"
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.borderColor = "rgba(68, 255, 210, 0.6)";
-                          e.currentTarget.style.boxShadow = "0 12px 32px rgba(68, 255, 210, 0.25)";
-                          e.currentTarget.style.transform = "translateY(-2px)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.borderColor = "rgba(68, 255, 210, 0.3)";
-                          e.currentTarget.style.boxShadow = "0 8px 24px rgba(68, 255, 210, 0.15)";
-                          e.currentTarget.style.transform = "translateY(0)";
+                          boxShadow: "0 8px 24px rgba(68, 255, 210, 0.15)"
                         }}
                       >
                         <div style={{ textAlign: "center", marginBottom: "1rem" }}>
@@ -853,12 +840,12 @@ export default function App() {
                             fontSize: "0.85rem",
                             boxShadow: "0 4px 12px rgba(68, 255, 210, 0.3)"
                           }}>
-                            🔒 Réservé au plan Pro
+                            Réservé au plan Pro
                           </span>
                         </div>
                         <div>
                           <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "0 0 0.8rem 0", color: "#f5f5f7", textAlign: "center" }}>
-                            🚀 Débloquez les analyses avancées
+                            Débloquez les analyses avancées
                           </p>
                           <div style={{ fontSize: "0.88rem", color: "#d1d5e0", lineHeight: "1.6" }}>
                             <p style={{ margin: "0.5rem 0", display: "flex", alignItems: "center" }}>
@@ -904,7 +891,7 @@ export default function App() {
             {/* Formulaire à droite */}
             <div>
               <div className="chrome-card form-card">
-                <p className="form-title">⚡ Analyse Gratuite Instantanée</p>
+                <p className="form-title">Analyse Gratuite Instantanée</p>
                 <p className="form-caption">
                   Entrez les chiffres de votre bien. Résultat en 7 secondes. 100% gratuit.
                 </p>
@@ -997,7 +984,7 @@ export default function App() {
                   onClick={handleAnalyze}
                   style={{ marginTop: "1.2rem", marginBottom: "1.5rem" }}
                 >
-                  ⚡ Analyser maintenant
+                  Analyser maintenant
                 </button>
 
                 {/* FONCTIONNALITÉS PREMIUM - NON CLIQUABLES SANS ABONNEMENT */}
@@ -1007,7 +994,7 @@ export default function App() {
                   pointerEvents: (hasActivePremium(me) || hasActivePro(me)) ? "auto" : "none"
                 }}>
                   <p style={{ marginTop: "1.5rem", fontSize: "0.85rem", color: "#44ffd2", fontWeight: 600 }}>
-                    💰 Fonctionnalités Premium (disponible avec Real Estate AI PREMIUM)
+                    Fonctionnalités Premium (disponible avec Real Estate AI PREMIUM)
                   </p>
                   {!(hasActivePremium(me) || hasActivePro(me)) && (
                     <div 
@@ -1036,7 +1023,7 @@ export default function App() {
                         fontSize: "0.8rem",
                         boxShadow: "0 8px 24px rgba(68, 255, 210, 0.4)"
                       }}>
-                        🔒 Débloquer avec Premium
+                        Débloquer avec Premium
                       </div>
                     </div>
                   )}
