@@ -6,6 +6,8 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "Inter", sans-serif;
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 /* Reset léger */
@@ -13,6 +15,12 @@ body {
   margin: 0;
   -webkit-tap-highlight-color: rgba(68, 255, 210, 0.2);
   -webkit-touch-callout: none;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 button {
@@ -132,16 +140,19 @@ a {
   }
 }
 
-* {
-  animation: fadeInUp 0.6s ease-out backwards;
-}
+/* Animations désactivées sur mobile pour éviter les débordements */
+@media (min-width: 901px) {
+  * {
+    animation: fadeInUp 0.6s ease-out backwards;
+  }
 
-*:nth-child(1) { animation-delay: 0.05s; }
-*:nth-child(2) { animation-delay: 0.1s; }
-*:nth-child(3) { animation-delay: 0.15s; }
-*:nth-child(4) { animation-delay: 0.2s; }
-*:nth-child(5) { animation-delay: 0.25s; }
-*:nth-child(n+6) { animation-delay: 0.3s; }
+  *:nth-child(1) { animation-delay: 0.05s; }
+  *:nth-child(2) { animation-delay: 0.1s; }
+  *:nth-child(3) { animation-delay: 0.15s; }
+  *:nth-child(4) { animation-delay: 0.2s; }
+  *:nth-child(5) { animation-delay: 0.25s; }
+  *:nth-child(n+6) { animation-delay: 0.3s; }
+}
 
 /* ==== NAVBAR ==== */
 .nav {
@@ -151,10 +162,11 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.9rem 5vw;
+  padding: 0.9rem 4vw;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  max-width: 100vw;
 }
 
 .nav-chrome {
@@ -1742,11 +1754,12 @@ input:focus {
     position: sticky;
     top: 0;
     z-index: 100;
-    padding: 0.8rem 1rem;
-    gap: 0.5rem;
+    padding: 0.6rem 0.8rem;
+    gap: 0.4rem;
     background: rgba(5, 5, 9, 0.95);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(68, 255, 210, 0.1);
+    max-width: 100vw;
   }
   
   .nav-links {
@@ -1769,29 +1782,34 @@ input:focus {
   
   /* Hero - Layout vertical app-style */
   .hero {
-    padding: 1.5rem 1rem;
+    padding: 1rem 0.8rem;
     min-height: auto;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
   
   .hero-grid {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
+    max-width: 100%;
   }
   
   .hero-right {
     order: -1;
+    max-width: 100%;
   }
   
   .hero h1 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     line-height: 1.2;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
   }
   
   .hero-subtitle {
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.4;
   }
   
   .hero-cta-row {
@@ -1808,11 +1826,12 @@ input:focus {
   /* KPIs - Cards horizontales compactes */
   .hero-kpis {
     display: flex;
-    gap: 0.6rem;
+    gap: 0.5rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    margin-bottom: 1rem;
+    margin: 0 -0.8rem 0.8rem -0.8rem;
+    padding: 0 0.8rem;
   }
   
   .hero-kpis::-webkit-scrollbar {
@@ -1821,79 +1840,85 @@ input:focus {
   
   .kpi-card {
     flex-shrink: 0;
-    width: 150px;
-    padding: 0.8rem;
+    width: 120px;
+    padding: 0.6rem;
+    min-width: 120px;
   }
   
   .kpi-label {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
   }
   
   .kpi-value {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
   
   /* Mockup - Carte compacte */
   .mockup-card {
-    padding: 1.2rem;
-    margin-bottom: 1rem;
+    padding: 0.9rem;
+    margin-bottom: 0.8rem;
+    max-width: 100%;
   }
   
   .mockup-title {
-    font-size: 0.9rem;
-    margin-bottom: 0.8rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem;
   }
   
   .mockup-row {
-    font-size: 0.85rem;
-    padding: 0.5rem 0;
+    font-size: 0.75rem;
+    padding: 0.4rem 0;
   }
   
   .mockup-number {
-    font-size: 0.9rem !important;
+    font-size: 0.8rem !important;
   }
   
   /* Steps - Layout vertical avec cards réduites */
   .steps-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.8rem;
   }
   
   .step-card {
-    padding: 1.2rem;
+    padding: 0.9rem;
+    max-width: 100%;
   }
   
   .step-badge {
-    width: 36px;
-    height: 36px;
-    font-size: 0.9rem;
+    width: 30px;
+    height: 30px;
+    font-size: 0.8rem;
   }
   
   .step-card h3 {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
   }
   
   .step-card p {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
   }
   
   /* Sections - Padding réduit */
   .section {
-    padding: 2rem 1rem;
+    padding: 1.5rem 0.8rem;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
   
   .section-header {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
   
   .section-header h2 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     line-height: 1.3;
   }
   
   .eyebrow {
-    font-size: 0.7rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.65rem;
+    margin-bottom: 0.4rem;
   }
   
   /* Analyzer - Layout vertical app */
@@ -1905,28 +1930,31 @@ input:focus {
   
   /* Formulaire - Style app compacte */
   .form-card {
-    padding: 1.2rem;
+    padding: 0.9rem;
+    max-width: 100%;
   }
   
   .form-title {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
   }
   
   .form-caption {
-    font-size: 0.8rem;
-    margin-bottom: 1rem;
+    font-size: 0.7rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.3;
   }
   
   .form-card label {
-    font-size: 0.85rem;
-    margin-bottom: 0.4rem;
+    font-size: 0.75rem;
+    margin-bottom: 0.3rem;
   }
   
   .form-card input {
     font-size: 16px !important;
-    padding: 0.7rem;
-    margin-bottom: 0.8rem;
+    padding: 0.6rem;
+    margin-bottom: 0.6rem;
+    max-width: 100%;
   }
   
   .form-row {
@@ -1935,15 +1963,15 @@ input:focus {
   }
   
   .form-bottom-note {
-    font-size: 0.75rem;
-    margin-top: -0.5rem;
-    margin-bottom: 0.8rem;
+    font-size: 0.65rem;
+    margin-top: -0.4rem;
+    margin-bottom: 0.6rem;
   }
   
   .primary-cta {
     width: 100%;
-    padding: 0.8rem;
-    font-size: 0.95rem;
+    padding: 0.7rem;
+    font-size: 0.85rem;
   }
   
   /* Summary card - Version compacte */
@@ -1964,69 +1992,72 @@ input:focus {
   /* Pricing - Layout vertical app */
   .pricing-grid {
     grid-template-columns: 1fr;
-    gap: 1.2rem;
+    gap: 1rem;
   }
   
   .pricing-copy {
-    padding: 0 0.5rem;
+    padding: 0;
   }
   
   .pricing-copy h2 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   
   .pricing-subtitle {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    line-height: 1.4;
   }
   
   .pricing-note,
   .pricing-security {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
   
   .plan-card {
-    padding: 1.3rem;
+    padding: 1rem;
+    max-width: 100%;
   }
   
   .plan-header h3 {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
   }
   
   .plan-description {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
   }
   
   .plan-price {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
   
   .price-unit {
-    font-size: 1rem;
-  }
-  
-  .plan-alt {
-    font-size: 0.8rem;
-  }
-  
-  .plan-features {
     font-size: 0.85rem;
   }
   
+  .plan-alt {
+    font-size: 0.7rem;
+  }
+  
+  .plan-features {
+    font-size: 0.75rem;
+  }
+  
   .plan-features li {
-    padding: 0.5rem 0;
+    padding: 0.4rem 0;
   }
   
   .plan-cta-group {
     flex-direction: column;
-    gap: 0.6rem;
-    margin-top: 1.2rem;
+    gap: 0.5rem;
+    margin-top: 1rem;
   }
   
   .plan-cta-primary,
   .plan-cta-secondary {
     width: 100%;
-    padding: 0.7rem;
-    font-size: 0.85rem;
+    padding: 0.6rem;
+    font-size: 0.75rem;
   }
   
   /* FAQ - Cards compactes */
@@ -2135,162 +2166,164 @@ input:focus {
   
   /* Typography ultra mobile */
   .hero h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     line-height: 1.25;
   }
   
   .section-header h2 {
-    font-size: 1.3rem;
+    font-size: 1.15rem;
   }
   
   .eyebrow {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     letter-spacing: 0.08em;
   }
   
   /* Logo ultra compact */
   .logo-svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
   }
   
   .logo-text {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
   
   /* Navigation ultra compacte */
   .nav {
-    padding: 0.6rem 0.8rem;
+    padding: 0.5rem 0.6rem;
   }
   
   .nav-cta {
-    padding: 0.45rem 0.7rem;
-    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.7rem;
   }
   
   /* Hero ultra compact */
   .hero {
-    padding: 1rem 0.8rem;
+    padding: 0.8rem 0.6rem;
   }
   
   .hero h1 {
-    font-size: 1.4rem;
-    margin-bottom: 0.6rem;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
   }
   
   .hero-subtitle {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     line-height: 1.4;
   }
   
   /* KPIs - Scroll horizontal optimisé */
   .hero-kpis {
-    margin: 0 -0.8rem 1rem -0.8rem;
-    padding: 0 0.8rem;
+    margin: 0 -0.6rem 0.6rem -0.6rem;
+    padding: 0 0.6rem;
+    gap: 0.4rem;
   }
   
   .kpi-card {
-    width: 130px;
-    padding: 0.7rem;
+    width: 110px;
+    padding: 0.5rem;
+    min-width: 110px;
   }
   
   .kpi-label {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
   }
   
   .kpi-value {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
   
   /* Mockup ultra compact */
   .mockup-card {
-    padding: 1rem;
+    padding: 0.8rem;
   }
   
   .mockup-title {
-    font-size: 0.85rem;
-  }
-  
-  .mockup-row {
-    font-size: 0.8rem;
-    padding: 0.4rem 0;
-  }
-  
-  .mockup-row span:first-child {
     font-size: 0.75rem;
   }
   
+  .mockup-row {
+    font-size: 0.7rem;
+    padding: 0.3rem 0;
+  }
+  
+  .mockup-row span:first-child {
+    font-size: 0.68rem;
+  }
+  
   .mockup-number {
-    font-size: 0.85rem !important;
+    font-size: 0.75rem !important;
   }
   
   /* Steps ultra compact */
   .step-card {
-    padding: 1rem;
+    padding: 0.8rem;
   }
   
   .step-badge {
-    width: 32px;
-    height: 32px;
-    font-size: 0.85rem;
-    margin-bottom: 0.6rem;
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
   }
   
   .step-card h3 {
-    font-size: 1rem;
-    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
   }
   
   .step-card p {
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     line-height: 1.4;
   }
   
   /* Sections ultra compact */
   .section {
-    padding: 1.5rem 0.8rem;
+    padding: 1.2rem 0.6rem;
   }
   
   .section-header {
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.9rem;
   }
   
   /* Formulaire ultra compact app-style */
   .form-card {
-    padding: 1rem;
-    border-radius: 0.8rem;
+    padding: 0.8rem;
+    border-radius: 0.7rem;
   }
   
   .form-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
   
   .form-caption {
-    font-size: 0.75rem;
+    font-size: 0.68rem;
     line-height: 1.3;
   }
   
   .form-card label {
-    font-size: 0.8rem;
-    margin-bottom: 0.3rem;
+    font-size: 0.72rem;
+    margin-bottom: 0.25rem;
   }
   
   .form-card input {
-    padding: 0.65rem;
-    margin-bottom: 0.7rem;
-    border-radius: 0.5rem;
+    padding: 0.55rem;
+    margin-bottom: 0.6rem;
+    border-radius: 0.45rem;
   }
   
   .form-bottom-note {
-    font-size: 0.7rem;
-    margin-top: -0.4rem;
-    margin-bottom: 0.7rem;
+    font-size: 0.65rem;
+    margin-top: -0.35rem;
+    margin-bottom: 0.6rem;
   }
   
   .primary-cta {
-    padding: 0.75rem;
-    font-size: 0.9rem;
-    border-radius: 0.6rem;
+    padding: 0.65rem;
+    font-size: 0.8rem;
+    border-radius: 0.5rem;
   }
   
   /* Summary ultra compact */
@@ -2316,70 +2349,70 @@ input:focus {
   }
   
   .pricing-copy h2 {
-    font-size: 1.3rem;
+    font-size: 1.15rem;
     line-height: 1.3;
   }
   
   .pricing-subtitle {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     line-height: 1.4;
   }
   
   .pricing-note {
-    font-size: 0.75rem;
-    padding: 0.6rem;
+    font-size: 0.68rem;
+    padding: 0.5rem;
   }
   
   .pricing-security {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
   
   .plan-card {
-    padding: 1.1rem;
-    border-radius: 0.9rem;
+    padding: 0.9rem;
+    border-radius: 0.8rem;
   }
   
   .plan-badge {
-    font-size: 0.7rem;
-    padding: 0.3rem 0.7rem;
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
   }
   
   .plan-header h3 {
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 1.3;
   }
   
   .plan-description {
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     line-height: 1.4;
   }
   
   .plan-price {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
   
   .price-unit {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
   
   .plan-alt {
-    font-size: 0.75rem;
+    font-size: 0.68rem;
   }
   
   .plan-features {
-    font-size: 0.8rem;
-    gap: 0.3rem;
+    font-size: 0.72rem;
+    gap: 0.25rem;
   }
   
   .plan-features li {
-    padding: 0.4rem 0 0.4rem 1.5rem;
+    padding: 0.35rem 0 0.35rem 1.3rem;
   }
   
   .plan-cta-primary,
   .plan-cta-secondary {
-    padding: 0.65rem;
-    font-size: 0.8rem;
-    border-radius: 0.6rem;
+    padding: 0.55rem;
+    font-size: 0.72rem;
+    border-radius: 0.5rem;
   }
   
   /* FAQ ultra compact */
