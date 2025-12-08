@@ -7,7 +7,21 @@
 export type PlanName = "premium" | "pro";
 export type BillingPeriod = "month" | "year";
 
-const API_URL = import.meta.env.VITE_API_URL || (typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.hostname}:3001` : 'http://localhost:3001');
+const getApiUrl = () => {
+  const env = import.meta.env.VITE_API_URL;
+  if (env) return env;
+  
+  if (typeof window !== 'undefined') {
+    const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (isDev) return 'http://localhost:3001';
+    // Production: use the current origin
+    return window.location.origin;
+  }
+  
+  return 'http://localhost:3001';
+};
+
+const API_URL = getApiUrl();
 
 export async function startCheckout(plan: PlanName, billing: BillingPeriod) {
   if (!["premium", "pro"].includes(plan)) {
@@ -25,6 +39,8 @@ export async function startCheckout(plan: PlanName, billing: BillingPeriod) {
     const headers: Record<string,string> = { "Content-Type": "application/json" };
     if (token) headers['Authorization'] = `Bearer ${token}`;
 
+    console.log(`Starting checkout for ${plan} (${billing}) using API URL: ${API_URL}`);
+
     const res = await fetch(`${API_URL}/api/create-checkout-session`, {
       method: "POST",
       headers,
@@ -32,8 +48,9 @@ export async function startCheckout(plan: PlanName, billing: BillingPeriod) {
     });
 
     if (!res.ok) {
-      console.error("Backend error while creating checkout session", await res.text());
-      alert("Impossible de lancer le paiement pour le moment.");
+      const errorText = await res.text();
+      console.error(`Backend error (${res.status}): ${errorText}`);
+      alert("Impossible de lancer le paiement pour le moment. Vérifiez votre connexion et réessayez.");
       return;
     }
 
@@ -46,6 +63,6 @@ export async function startCheckout(plan: PlanName, billing: BillingPeriod) {
     }
   } catch (err) {
     console.error("Network error while calling checkout endpoint:", err);
-    alert("Erreur réseau, réessaie dans quelques secondes.");
+    alert("Erreur réseau. Vérifiez votre connexion et réessayez.");
   }
 }

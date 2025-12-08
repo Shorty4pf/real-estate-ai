@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { API_BASE_URL } from "./config";
 
 type Mode = "login" | "signup";
 
@@ -21,7 +22,7 @@ export const AuthPage = () => {
 
     try {
       const endpoint = isLogin ? "/api/login" : "/api/signup";
-      const res = await fetch(`http://localhost:4242${endpoint}`, {
+      const res = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

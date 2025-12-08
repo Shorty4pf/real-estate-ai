@@ -5,6 +5,7 @@ import { AuthPage } from "./AuthPage";
 import { SuccessPage } from "./SuccessPage";
 import { LegalPages } from "./LegalPages";
 import { AlertsManager } from "./AlertsManager";
+import { API_BASE_URL } from "./config";
 import Logo from "./Logo";
 import {
   grossYield,
@@ -76,7 +77,7 @@ export default function App() {
       const t = token || localStorage.getItem("token");
       if (!t) return;
       try {
-        const res = await fetch("http://localhost:4242/api/me", {
+        const res = await fetch(`${API_BASE_URL}/api/me`, {
           headers: { Authorization: `Bearer ${t}` },
         });
         if (res.ok) {
@@ -148,7 +149,7 @@ export default function App() {
     };
 
     try {
-      const res = await fetch("http://localhost:4242/api/deals", {
+      const res = await fetch(`${API_BASE_URL}/api/deals`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -693,7 +694,7 @@ export default function App() {
                           }
                           try {
                             const res = await fetch(
-                              "http://localhost:4242/api/analysis/advanced",
+                              `${API_BASE_URL}/api/analysis/advanced`,
                               {
                                 headers: { Authorization: `Bearer ${tok}` },
                               }
