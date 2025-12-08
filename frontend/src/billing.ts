@@ -8,17 +8,14 @@ export type PlanName = "premium" | "pro";
 export type BillingPeriod = "month" | "year";
 
 const getApiUrl = () => {
-  const env = import.meta.env.VITE_API_URL;
-  if (env) return env;
-  
+  // Force production URL to bypass Vercel caching issues
   if (typeof window !== 'undefined') {
     const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     if (isDev) return 'http://localhost:3001';
-    // Production: use the current origin
-    return window.location.origin;
   }
   
-  return 'http://localhost:3001';
+  // HARDCODED production backend URL (cy05 - Render Starter plan)
+  return 'https://real-estate-ai-backend-cy05.onrender.com';
 };
 
 const API_URL = getApiUrl();
