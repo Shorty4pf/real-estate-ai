@@ -921,7 +921,10 @@ export default function App() {
                 <label>Loyer mensuel (€)</label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   placeholder="ex : 850"
+                  autoComplete="off"
                   onChange={(e) =>
                     update("rentMonthly", Number(e.target.value))
                   }
@@ -930,7 +933,10 @@ export default function App() {
                 <label>Charges mensuelles (€)</label>
                 <input
                   type="number"
-                  placeholder="ex : 120 (copro, entretien, etc.)"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  placeholder="ex : 120"
+                  autoComplete="off"
                   onChange={(e) =>
                     update("chargesMonthly", Number(e.target.value))
                   }
@@ -939,7 +945,10 @@ export default function App() {
                 <label>Taxe foncière annuelle (€)</label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   placeholder="ex : 950"
+                  autoComplete="off"
                   onChange={(e) =>
                     update("taxeFonciereYearly", Number(e.target.value))
                   }
@@ -948,7 +957,10 @@ export default function App() {
                 <label>Apport (€)</label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   placeholder="ex : 30000"
+                  autoComplete="off"
                   onChange={(e) =>
                     update("downPayment", Number(e.target.value))
                   }
@@ -969,7 +981,10 @@ export default function App() {
                     <label>Durée du crédit (années)</label>
                     <input
                       type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       defaultValue={20}
+                      autoComplete="off"
                       onChange={(e) =>
                         update("durationYears", Number(e.target.value))
                       }
@@ -1029,7 +1044,10 @@ export default function App() {
                 <label>Frais de gestion (%)</label>
                 <input
                   type="number"
-                  placeholder="ex : 8 (% des loyers annuels)"
+                  inputMode="decimal"
+                  step="0.1"
+                  placeholder="ex : 8"
+                  autoComplete="off"
                   onChange={(e) =>
                     update("managementFeesPercent", Number(e.target.value))
                   }
@@ -1039,7 +1057,10 @@ export default function App() {
                 <label>Garantie loyer impayé (€/mois)</label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   placeholder="ex : 45"
+                  autoComplete="off"
                   onChange={(e) =>
                     update("rentalInsuranceMonthly", Number(e.target.value))
                   }
@@ -1049,7 +1070,10 @@ export default function App() {
                 <label>Prélèvement à la source (%)</label>
                 <input
                   type="number"
-                  placeholder="ex : 24 (taux de votre imposition)"
+                  inputMode="decimal"
+                  step="0.1"
+                  placeholder="ex : 24"
+                  autoComplete="off"
                   onChange={(e) =>
                     update("sourceWithholdingRate", Number(e.target.value))
                   }
@@ -1059,7 +1083,10 @@ export default function App() {
                 <label>Prélèvements sociaux (%)</label>
                 <input
                   type="number"
+                  inputMode="decimal"
+                  step="0.1"
                   placeholder="ex : 8"
+                  autoComplete="off"
                   onChange={(e) =>
                     update("socialContributionsRate", Number(e.target.value))
                   }
