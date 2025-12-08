@@ -816,56 +816,64 @@ export default function App() {
                       </div>
                     ) : (
                       <div 
-                        className="premium-locked-section"
                         onClick={() => scrollToId("pricing")}
                         style={{ 
                           marginTop: "1.3rem", 
-                          padding: "1.1rem", 
+                          padding: "1.4rem", 
                           borderRadius: "1rem", 
-                          border: "1px solid rgba(255, 255, 255, 0.18)",
-                          background: "radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), rgba(5, 5, 12, 0.98))",
-                          boxShadow: "0 18px 40px rgba(0, 0, 0, 0.85)",
+                          border: "2px solid rgba(68, 255, 210, 0.3)",
+                          background: "linear-gradient(135deg, rgba(68, 255, 210, 0.08), rgba(5, 5, 12, 0.95))",
+                          boxShadow: "0 8px 24px rgba(68, 255, 210, 0.15)",
                           cursor: "pointer",
-                          position: "relative",
-                          transition: "all 0.18s ease-out"
+                          transition: "all 0.2s ease"
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.borderColor = "rgba(68, 255, 210, 0.7)";
-                          e.currentTarget.style.boxShadow = "0 26px 70px rgba(0, 0, 0, 0.95)";
-                          e.currentTarget.style.transform = "translateY(-1px)";
+                          e.currentTarget.style.borderColor = "rgba(68, 255, 210, 0.6)";
+                          e.currentTarget.style.boxShadow = "0 12px 32px rgba(68, 255, 210, 0.25)";
+                          e.currentTarget.style.transform = "translateY(-2px)";
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.18)";
-                          e.currentTarget.style.boxShadow = "0 18px 40px rgba(0, 0, 0, 0.85)";
+                          e.currentTarget.style.borderColor = "rgba(68, 255, 210, 0.3)";
+                          e.currentTarget.style.boxShadow = "0 8px 24px rgba(68, 255, 210, 0.15)";
                           e.currentTarget.style.transform = "translateY(0)";
                         }}
                       >
-                        <div style={{ filter: "blur(3px)", pointerEvents: "none" }}>
-                          <p style={{ fontSize: "0.9rem", fontWeight: 600, margin: "0 0 0.5rem 0" }}>
-                            🚀 Passez au plan Pro : Analyses avancées
-                          </p>
-                          <div style={{ fontSize: "0.85rem", color: "#a8acbe", lineHeight: "1.5" }}>
-                            <p style={{ margin: "0.3rem 0" }}>• Scénarios financiers avancés avec projections 10 ans</p>
-                            <p style={{ margin: "0.3rem 0" }}>• Alertes temps réel sur les nouveaux biens rentables</p>
-                            <p style={{ margin: "0.3rem 0" }}>• Optimisation fiscale et comparaison multi-biens</p>
-                            <p style={{ margin: "0.3rem 0" }}>• Tags & organisation de portefeuille</p>
-                          </div>
+                        <div style={{ textAlign: "center", marginBottom: "1rem" }}>
+                          <span style={{
+                            display: "inline-block",
+                            background: "linear-gradient(135deg, #44ffd2, #3ecfb8)",
+                            color: "#050509",
+                            padding: "0.5rem 1.2rem",
+                            borderRadius: "999px",
+                            fontWeight: 700,
+                            fontSize: "0.85rem",
+                            boxShadow: "0 4px 12px rgba(68, 255, 210, 0.3)"
+                          }}>
+                            🔒 Réservé au plan Pro
+                          </span>
                         </div>
-                        <div style={{ 
-                          position: "absolute", 
-                          top: "50%", 
-                          left: "50%", 
-                          transform: "translate(-50%, -50%)",
-                          background: "linear-gradient(135deg, #f5f5f7, #c8ccd8)",
-                          color: "#050509",
-                          padding: "0.75rem 1.6rem",
-                          borderRadius: "999px",
-                          fontWeight: 700,
-                          fontSize: "0.88rem",
-                          boxShadow: "0 14px 35px rgba(0, 0, 0, 0.8)",
-                          whiteSpace: "nowrap"
-                        }}>
-                          🔒 Réservé au plan Pro
+                        <div>
+                          <p style={{ fontSize: "0.95rem", fontWeight: 600, margin: "0 0 0.8rem 0", color: "#f5f5f7", textAlign: "center" }}>
+                            🚀 Débloquez les analyses avancées
+                          </p>
+                          <div style={{ fontSize: "0.88rem", color: "#d1d5e0", lineHeight: "1.6" }}>
+                            <p style={{ margin: "0.5rem 0", display: "flex", alignItems: "center" }}>
+                              <span style={{ marginRight: "0.5rem", color: "#44ffd2" }}>✓</span>
+                              Scénarios financiers avancés avec projections 10 ans
+                            </p>
+                            <p style={{ margin: "0.5rem 0", display: "flex", alignItems: "center" }}>
+                              <span style={{ marginRight: "0.5rem", color: "#44ffd2" }}>✓</span>
+                              Alertes temps réel sur les nouveaux biens rentables
+                            </p>
+                            <p style={{ margin: "0.5rem 0", display: "flex", alignItems: "center" }}>
+                              <span style={{ marginRight: "0.5rem", color: "#44ffd2" }}>✓</span>
+                              Optimisation fiscale et comparaison multi-biens
+                            </p>
+                            <p style={{ margin: "0.5rem 0", display: "flex", alignItems: "center" }}>
+                              <span style={{ marginRight: "0.5rem", color: "#44ffd2" }}>✓</span>
+                              Tags & organisation de portefeuille
+                            </p>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -965,10 +973,54 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* NOUVELLES FONCTIONNALITÉS PREMIUM */}
-                <p style={{ marginTop: "1.5rem", fontSize: "0.85rem", color: "#44ffd2", fontWeight: 600 }}>
-                  💰 Fonctionnalités Premium (optionnel)
-                </p>
+                <button
+                  className="primary-cta primary-chrome"
+                  onClick={handleAnalyze}
+                  style={{ marginTop: "1.2rem", marginBottom: "1.5rem" }}
+                >
+                  ⚡ Analyser maintenant
+                </button>
+
+                {/* FONCTIONNALITÉS PREMIUM - NON CLIQUABLES SANS ABONNEMENT */}
+                <div style={{ 
+                  position: "relative",
+                  opacity: (hasActivePremium(me) || hasActivePro(me)) ? 1 : 0.6,
+                  pointerEvents: (hasActivePremium(me) || hasActivePro(me)) ? "auto" : "none"
+                }}>
+                  <p style={{ marginTop: "1.5rem", fontSize: "0.85rem", color: "#44ffd2", fontWeight: 600 }}>
+                    💰 Fonctionnalités Premium (disponible avec Real Estate AI PREMIUM)
+                  </p>
+                  {!(hasActivePremium(me) || hasActivePro(me)) && (
+                    <div 
+                      onClick={() => scrollToId("pricing")}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: "rgba(5, 5, 12, 0.7)",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: "0.6rem",
+                        zIndex: 10
+                      }}
+                    >
+                      <div style={{
+                        background: "rgba(68, 255, 210, 0.95)",
+                        color: "#050509",
+                        padding: "0.6rem 1.2rem",
+                        borderRadius: "999px",
+                        fontWeight: 700,
+                        fontSize: "0.8rem",
+                        boxShadow: "0 8px 24px rgba(68, 255, 210, 0.4)"
+                      }}>
+                        🔒 Débloquer avec Premium
+                      </div>
+                    </div>
+                  )}
 
                 <label>Frais de gestion (%)</label>
                 <input
@@ -1009,16 +1061,7 @@ export default function App() {
                   }
                 />
                 <p className="form-bottom-note">CSG + CRDS sur les revenus fonciers</p>
-
-                <button
-                  className="primary-cta primary-chrome"
-                  onClick={handleAnalyze}
-                >
-                  ⚡ Analyser maintenant
-                </button>
-                <p className="form-bottom-note">
-                  Modifie les chiffres en direct pour voir l'impact sur votre rendement.
-                </p>
+                </div>
               </div>
             </div>
           </div>
