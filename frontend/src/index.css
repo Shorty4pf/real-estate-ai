@@ -1977,9 +1977,10 @@ input:focus {
   }
   
   .form-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-bottom: 0.5rem;
     font-weight: 700;
+    line-height: 1.3;
   }
   
   .form-caption {
@@ -1990,9 +1991,10 @@ input:focus {
   }
   
   .form-card label {
-    font-size: 0.8rem;
-    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
     font-weight: 500;
+    line-height: 1.4;
   }
   
   .form-card input {
@@ -2018,10 +2020,11 @@ input:focus {
   }
   
   .form-bottom-note {
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     margin-top: -0.5rem;
     margin-bottom: 0.75rem;
-    opacity: 0.6;
+    opacity: 0.65;
+    line-height: 1.4;
   }
   
   .primary-cta {

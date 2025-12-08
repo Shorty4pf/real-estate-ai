@@ -993,7 +993,7 @@ export default function App() {
                   opacity: (hasActivePremium(me) || hasActivePro(me)) ? 1 : 0.6,
                   pointerEvents: (hasActivePremium(me) || hasActivePro(me)) ? "auto" : "none"
                 }}>
-                  <p style={{ marginTop: "1.5rem", fontSize: "0.85rem", color: "#44ffd2", fontWeight: 600 }}>
+                  <p style={{ marginTop: "1.5rem", fontSize: "0.8rem", color: "#44ffd2", fontWeight: 600, lineHeight: "1.4" }}>
                     Fonctionnalités Premium (disponible avec Real Estate AI PREMIUM)
                   </p>
                   {!(hasActivePremium(me) || hasActivePro(me)) && (
@@ -1007,31 +1007,33 @@ export default function App() {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        background: "rgba(5, 5, 12, 0.7)",
+                        background: "rgba(5, 5, 12, 0.75)",
+                        backdropFilter: "blur(8px)",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        borderRadius: "0.6rem",
+                        borderRadius: "0.75rem",
                         zIndex: 10,
                         transition: "background 0.2s ease"
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "rgba(5, 5, 12, 0.8)";
+                        e.currentTarget.style.background = "rgba(5, 5, 12, 0.85)";
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "rgba(5, 5, 12, 0.7)";
+                        e.currentTarget.style.background = "rgba(5, 5, 12, 0.75)";
                       }}
                     >
                       <div style={{
-                        background: "rgba(68, 255, 210, 0.95)",
+                        background: "linear-gradient(135deg, rgba(68, 255, 210, 0.95), rgba(68, 255, 210, 0.85))",
                         color: "#050509",
-                        padding: "0.75rem 1.5rem",
+                        padding: "0.85rem 1.75rem",
                         borderRadius: "999px",
                         fontWeight: 700,
-                        fontSize: "0.9rem",
-                        boxShadow: "0 8px 24px rgba(68, 255, 210, 0.4)",
-                        transition: "transform 0.2s ease"
+                        fontSize: "0.88rem",
+                        boxShadow: "0 4px 16px rgba(68, 255, 210, 0.35)",
+                        transition: "transform 0.2s ease",
+                        letterSpacing: "-0.01em"
                       }}>
                         Débloquer avec Premium
                       </div>
