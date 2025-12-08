@@ -155,22 +155,11 @@ export default function App() {
 
   function handleAnalyze() {
     if (!data.purchasePrice || !data.rentMonthly) {
-      alert("Indique au minimum le prix d'achat et le loyer mensuel.");
+      alert("Indique au minimum le prix d’achat et le loyer mensuel.");
       return;
     }
     setShowResults(true);
-    
-    // Attendre que React mette à jour le DOM avant de scroller
-    setTimeout(() => {
-      const el = document.getElementById("analyzer");
-      if (el) {
-        // Sur mobile, scroll avec un offset pour compenser la nav sticky
-        const isMobile = window.innerWidth <= 900;
-        const yOffset = isMobile ? -80 : -100;
-        const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: y, behavior: "smooth" });
-      }
-    }, 150);
+    scrollToId("analyzer");
   }
 
   async function saveCurrentDeal() {
