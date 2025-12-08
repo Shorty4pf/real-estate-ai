@@ -777,6 +777,38 @@ input:focus {
   color: #44ffd2;
 }
 
+/* Fonctionnalités verrouillées */
+.plan-features li.feature-locked {
+  cursor: pointer;
+  position: relative;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  background: rgba(100, 100, 120, 0.15);
+  border: 1px solid rgba(100, 100, 120, 0.3);
+}
+
+.plan-features li.feature-locked:hover {
+  background: rgba(68, 255, 210, 0.08);
+  border-color: rgba(68, 255, 210, 0.4);
+}
+
+.feature-blur {
+  display: block;
+  filter: blur(3px);
+  color: #888;
+  opacity: 0.6;
+}
+
+.feature-unlock {
+  display: block;
+  font-size: 0.75rem;
+  color: #44ffd2;
+  margin-top: 0.3rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
 /* Boutons CTA */
 .plan-cta-group {
   margin-top: 1.6rem;

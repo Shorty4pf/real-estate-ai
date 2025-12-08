@@ -1,7 +1,10 @@
 import type { FC } from "react";
+import { useState } from "react";
 import { startCheckout } from "./billing";
 
 export const PricingSection: FC = () => {
+  const [userPlan] = useState<string | null>(null);
+
   function requireAuthAndCheckout(plan: Parameters<typeof startCheckout>[0], billing: Parameters<typeof startCheckout>[1]) {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -11,6 +14,21 @@ export const PricingSection: FC = () => {
       return;
     }
     void startCheckout(plan, billing);
+  }
+
+  function handleLockedFeatureClick(requiredPlan: string) {
+    // If user is not subscribed or doesn't have required plan, redirect to pricing
+    if (!userPlan || userPlan !== requiredPlan) {
+      const plan = requiredPlan === "pro" ? "pro" : "premium";
+      // Redirect to checkout
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.history.pushState({}, '', '/login');
+        window.location.reload();
+        return;
+      }
+      void startCheckout(plan as "premium" | "pro", "month");
+    }
   }
   return (
     <div className="pricing-shell">
@@ -59,10 +77,10 @@ export const PricingSection: FC = () => {
           <ul className="plan-features">
             <li>Analyses illimitées de biens</li>
             <li>Historique & sauvegarde des deals</li>
-            <li>💰 Calculateur Frais de gestion – Mesure l'impact exact sur ta rentabilité</li>
-            <li>🛡️ Garantie loyer impayé – Simule le coût de couverture</li>
-            <li>📊 Taux de prélèvement à la source – Optimise tes impôts</li>
-            <li>🏦 Prélèvements sociaux – Comprends chaque centime</li>
+            <li>Calculateur Frais de gestion – Mesure l'impact exact sur ta rentabilité</li>
+            <li>Garantie loyer impayé – Simule le coût de couverture</li>
+            <li>Taux de prélèvement à la source – Optimise tes impôts</li>
+            <li>Prélèvements sociaux – Comprends chaque centime</li>
             <li>Export des chiffres (PDF / CSV bientôt)</li>
             <li>Support prioritaire par e-mail</li>
           </ul>
@@ -110,9 +128,18 @@ export const PricingSection: FC = () => {
           <ul className="plan-features">
             <li>Toutes les fonctionnalités Premium</li>
             <li>Alertes e-mail temps réel sur vos critères</li>
-            <li>Scénarios avancés (apport, taux, durée…)</li>
-            <li>Tags & organisation de portefeuille</li>
-            <li>Priorité sur les prochaines fonctionnalités IA</li>
+            <li className="feature-locked" onClick={() => handleLockedFeatureClick("pro")}>
+              <span className="feature-blur">Scénarios avancés (apport, taux, durée…)</span>
+              <span className="feature-unlock">Débloqué avec Pro</span>
+            </li>
+            <li className="feature-locked" onClick={() => handleLockedFeatureClick("pro")}>
+              <span className="feature-blur">Tags & organisation de portefeuille</span>
+              <span className="feature-unlock">Débloqué avec Pro</span>
+            </li>
+            <li className="feature-locked" onClick={() => handleLockedFeatureClick("pro")}>
+              <span className="feature-blur">Priorité sur les prochaines fonctionnalités IA</span>
+              <span className="feature-unlock">Débloqué avec Pro</span>
+            </li>
           </ul>
 
           <div className="plan-cta-group">
