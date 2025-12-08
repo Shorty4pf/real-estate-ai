@@ -1,0 +1,18 @@
+{
+  "name": "Real Estate AI",
+  "short_name": "RE AI",
+  "description": "Analyse immobilière intelligente en 7 secondes - Calculez la rentabilité de vos investissements",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#44ffd2",
+  "background_color": "#050509",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
+}

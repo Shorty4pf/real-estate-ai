@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { API_BASE_URL } from "./config";
+import Logo from "./Logo";
 
 type Mode = "login" | "signup";
 
@@ -87,7 +88,13 @@ export const AuthPage = () => {
         {/* Main card */}
         <div className="chrome-card auth-card">
           <div className="auth-header">
-            <div className="auth-badge">Real Estate AI</div>
+            {/* Logo au-dessus du titre */}
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
+              <div style={{ width: "80px", height: "80px" }}>
+                <Logo />
+              </div>
+            </div>
+            
             <h1 className="auth-title">
               {isLogin ? "Reconnecter pour continuer" : "Créer votre compte"}
             </h1>
