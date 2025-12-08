@@ -41,7 +41,7 @@ export const PricingSection: FC = () => {
             <h3>Pour investisseurs réguliers.</h3>
             <p className="plan-description">
               Vous analysez 5-10 biens par mois. Vous cherchez la fiabilité et
-              la clarté pour chaque décision. Ceci est pour vous.
+              la clarté pour chaque décision. Maîtrisez vos frais de gestion, garanties et impôts.
             </p>
           </div>
 
@@ -59,6 +59,10 @@ export const PricingSection: FC = () => {
           <ul className="plan-features">
             <li>Analyses illimitées de biens</li>
             <li>Historique & sauvegarde des deals</li>
+            <li>💰 Calculateur Frais de gestion – Mesure l'impact exact sur ta rentabilité</li>
+            <li>🛡️ Garantie loyer impayé – Simule le coût de couverture</li>
+            <li>📊 Taux de prélèvement à la source – Optimise tes impôts</li>
+            <li>🏦 Prélèvements sociaux – Comprends chaque centime</li>
             <li>Export des chiffres (PDF / CSV bientôt)</li>
             <li>Support prioritaire par e-mail</li>
           </ul>

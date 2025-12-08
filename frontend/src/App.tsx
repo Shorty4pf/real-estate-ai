@@ -582,6 +582,58 @@ export default function App() {
                       <p>{verdict}</p>
                     </div>
 
+                    {/* AFFICHAGE DES FONCTIONNALITÉS PREMIUM */}
+                    {(data.managementFeesPercent || data.rentalInsuranceMonthly || data.sourceWithholdingRate || data.socialContributionsRate) && (
+                      <div style={{ marginTop: "1.4rem", padding: "1.1rem", borderRadius: "0.9rem", background: "rgba(68, 255, 210, 0.08)", border: "1px solid rgba(68, 255, 210, 0.2)" }}>
+                        <p style={{ fontSize: "0.9rem", fontWeight: 600, color: "#44ffd2", margin: "0 0 0.8rem 0" }}>
+                          💰 Analyse Premium détaillée
+                        </p>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.9rem", fontSize: "0.9rem" }}>
+                          {data.managementFeesPercent ? (
+                            <div>
+                              <p style={{ color: "#a3a7b8", margin: 0 }}>Frais de gestion annuels</p>
+                              <p style={{ fontWeight: 600, fontSize: "1.1rem", margin: "0.2rem 0 0", color: "#f5f5f7" }}>
+                                {(data.rentMonthly * 12 * data.managementFeesPercent / 100).toFixed(0)} €
+                              </p>
+                            </div>
+                          ) : null}
+                          {data.rentalInsuranceMonthly ? (
+                            <div>
+                              <p style={{ color: "#a3a7b8", margin: 0 }}>Garantie loyer impayé annuelle</p>
+                              <p style={{ fontWeight: 600, fontSize: "1.1rem", margin: "0.2rem 0 0", color: "#f5f5f7" }}>
+                                {(data.rentalInsuranceMonthly * 12).toFixed(0)} €
+                              </p>
+                            </div>
+                          ) : null}
+                          {data.sourceWithholdingRate ? (
+                            <div>
+                              <p style={{ color: "#a3a7b8", margin: 0 }}>Prélèvement à la source annuel</p>
+                              <p style={{ fontWeight: 600, fontSize: "1.1rem", margin: "0.2rem 0 0", color: "#f5f5f7" }}>
+                                {(data.rentMonthly * 12 * data.sourceWithholdingRate / 100).toFixed(0)} €
+                              </p>
+                            </div>
+                          ) : null}
+                          {data.socialContributionsRate ? (
+                            <div>
+                              <p style={{ color: "#a3a7b8", margin: 0 }}>Prélèvements sociaux annuels</p>
+                              <p style={{ fontWeight: 600, fontSize: "1.1rem", margin: "0.2rem 0 0", color: "#f5f5f7" }}>
+                                {(data.rentMonthly * 12 * data.socialContributionsRate / 100).toFixed(0)} €
+                              </p>
+                            </div>
+                          ) : null}
+                        </div>
+                        <div style={{ marginTop: "0.9rem", paddingTop: "0.9rem", borderTop: "1px solid rgba(68, 255, 210, 0.15)" }}>
+                          <p style={{ color: "#a3a7b8", margin: 0, fontSize: "0.85rem" }}>Total frais annuels</p>
+                          <p style={{ fontWeight: 700, fontSize: "1.2rem", margin: "0.2rem 0 0", color: "#44ffd2" }}>
+                            {((data.rentMonthly * 12 * (data.managementFeesPercent || 0) / 100) + 
+                              (data.rentalInsuranceMonthly || 0) * 12 + 
+                              (data.rentMonthly * 12 * (data.sourceWithholdingRate || 0) / 100) +
+                              (data.rentMonthly * 12 * (data.socialContributionsRate || 0) / 100)).toFixed(0)} €
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Bouton d'enregistrement */}
                     <button
                       className="secondary-ghost"
@@ -794,6 +846,51 @@ export default function App() {
                     />
                   </div>
                 </div>
+
+                {/* NOUVELLES FONCTIONNALITÉS PREMIUM */}
+                <p style={{ marginTop: "1.5rem", fontSize: "0.85rem", color: "#44ffd2", fontWeight: 600 }}>
+                  💰 Fonctionnalités Premium (optionnel)
+                </p>
+
+                <label>Frais de gestion (%)</label>
+                <input
+                  type="number"
+                  placeholder="ex : 8 (% des loyers annuels)"
+                  onChange={(e) =>
+                    update("managementFeesPercent", Number(e.target.value))
+                  }
+                />
+                <p className="form-bottom-note">Frais d'agence ou syndic sur les loyers annuels</p>
+
+                <label>Garantie loyer impayé (€/mois)</label>
+                <input
+                  type="number"
+                  placeholder="ex : 45"
+                  onChange={(e) =>
+                    update("rentalInsuranceMonthly", Number(e.target.value))
+                  }
+                />
+                <p className="form-bottom-note">Coût mensuel de la couverture loyer impayé</p>
+
+                <label>Prélèvement à la source (%)</label>
+                <input
+                  type="number"
+                  placeholder="ex : 24 (taux de votre imposition)"
+                  onChange={(e) =>
+                    update("sourceWithholdingRate", Number(e.target.value))
+                  }
+                />
+                <p className="form-bottom-note">Taux d'imposition sur les loyers</p>
+
+                <label>Prélèvements sociaux (%)</label>
+                <input
+                  type="number"
+                  placeholder="ex : 8"
+                  onChange={(e) =>
+                    update("socialContributionsRate", Number(e.target.value))
+                  }
+                />
+                <p className="form-bottom-note">CSG + CRDS sur les revenus fonciers</p>
 
                 <button
                   className="primary-cta primary-chrome"

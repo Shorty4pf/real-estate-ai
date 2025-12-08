@@ -6,6 +6,11 @@ export type DealInput = {
   interestRate: number;
   durationYears: number;
   downPayment: number;
+  // Nouvelles fonctionnalités Premium
+  managementFeesPercent?: number; // % des loyers annuels
+  rentalInsuranceMonthly?: number; // Garantie loyer impayé
+  sourceWithholdingRate?: number; // Taux prélèvement à la source (%)
+  socialContributionsRate?: number; // Prélèvements sociaux (%)
 };
 
 export function monthlyLoanPayment(
@@ -42,13 +47,24 @@ export function monthlyCashflow(input: DealInput): number {
     taxeFonciereYearly,
     interestRate,
     durationYears,
+    managementFeesPercent = 0,
+    rentalInsuranceMonthly = 0,
+    sourceWithholdingRate = 0,
+    socialContributionsRate = 0,
   } = input;
 
   const principal = Math.max(0, purchasePrice - downPayment);
   const loan = monthlyLoanPayment(principal, interestRate, durationYears);
   const taxeMensuelle = taxeFonciereYearly / 12;
+  
+  // Frais de gestion (% des loyers annuels / 12)
+  const managementFees = (rentMonthly * managementFeesPercent) / 100;
+  
+  // Impôts (prélèvement à la source + sociaux)
+  const withholding = (rentMonthly * sourceWithholdingRate) / 100;
+  const socialFees = (rentMonthly * socialContributionsRate) / 100;
 
-  return rentMonthly - chargesMonthly - taxeMensuelle - loan;
+  return rentMonthly - chargesMonthly - taxeMensuelle - loan - managementFees - rentalInsuranceMonthly - withholding - socialFees;
 }
 
 export function dealScore(input: DealInput): number {
@@ -74,4 +90,30 @@ export function dealScore(input: DealInput): number {
   else score -= 10;
 
   return Math.max(0, Math.min(100, score));
+}
+
+// ===== NOUVELLES FONCTIONNALITÉS PREMIUM =====
+
+export function managementFeesYearly(input: DealInput): number {
+  const { rentMonthly, managementFeesPercent = 0 } = input;
+  return (rentMonthly * 12 * managementFeesPercent) / 100;
+}
+
+export function rentalInsuranceYearly(input: DealInput): number {
+  const { rentalInsuranceMonthly = 0 } = input;
+  return rentalInsuranceMonthly * 12;
+}
+
+export function sourceWithholdingYearly(input: DealInput): number {
+  const { rentMonthly, sourceWithholdingRate = 0 } = input;
+  return (rentMonthly * 12 * sourceWithholdingRate) / 100;
+}
+
+export function socialContributionsYearly(input: DealInput): number {
+  const { rentMonthly, socialContributionsRate = 0 } = input;
+  return (rentMonthly * 12 * socialContributionsRate) / 100;
+}
+
+export function totalTaxesAndFeesYearly(input: DealInput): number {
+  return managementFeesYearly(input) + rentalInsuranceYearly(input) + sourceWithholdingYearly(input) + socialContributionsYearly(input);
 }
