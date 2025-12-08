@@ -25,6 +25,30 @@ function verdictFromScore(score: number): string {
   return "Deal à éviter dans l’état actuel des chiffres.";
 }
 
+// Helper functions to check subscription plans
+function hasActivePremium(me: typeof initialMe): boolean {
+  return me?.subscriptions?.some(
+    (sub) => ['active', 'trialing'].includes(sub.status) && sub.plan === 'premium'
+  ) || false;
+}
+
+function hasActivePro(me: typeof initialMe): boolean {
+  return me?.subscriptions?.some(
+    (sub) => ['active', 'trialing'].includes(sub.status) && sub.plan === 'pro'
+  ) || false;
+}
+
+function hasAnyActiveSubscription(me: typeof initialMe): boolean {
+  return me?.subscriptions?.some(
+    (sub) => ['active', 'trialing'].includes(sub.status)
+  ) || false;
+}
+
+const initialMe: { 
+  user?: { id: number; email: string; stripe_customer_id: string | null; created_at: string }; 
+  subscriptions?: Array<{ id: number; user_id: number; stripe_subscription_id: string; plan: string; billing_period: string; status: string; created_at: string; updated_at: string }>
+} | null = null;
+
 export default function App() {
   const [data, setData] = useState<DealInput>({
     purchasePrice: 0,
@@ -253,12 +277,8 @@ export default function App() {
       return <AuthPage />;
     }
     
-    // Vérifier que l'utilisateur a un abonnement actif
-    const hasActiveSubscription = me?.subscriptions?.some(
-      (sub) => ['active', 'trialing'].includes(sub.status)
-    );
-
-    if (!hasActiveSubscription) {
+    // Vérifier que l'utilisateur a un abonnement Pro (les alertes sont réservées au plan Pro)
+    if (!hasActivePro(me)) {
       return (
         <div className="site">
           <header className="nav nav-chrome">
@@ -286,9 +306,10 @@ export default function App() {
             <div className="chrome-card success-card">
               <div className="success-content">
                 <div className="success-icon">🔒</div>
-                <h1 className="success-title">Accès Réservé aux Abonnés</h1>
+                <h1 className="success-title">Accès Réservé au Plan Pro</h1>
                 <p className="success-subtitle">
-                  Les alertes immobilières sont disponibles avec les plans Premium ou Pro.
+                  Les alertes immobilières en temps réel sont exclusives au plan Pro.
+                  {hasActivePremium(me) && " Passez au plan Pro pour débloquer cette fonctionnalité."}
                 </p>
                 <button
                   className="primary-cta primary-chrome success-cta"
@@ -297,7 +318,7 @@ export default function App() {
                     setRoutePath("/");
                   }}
                 >
-                  Voir les plans tarifaires
+                  Voir le plan Pro
                 </button>
               </div>
             </div>
@@ -388,7 +409,7 @@ export default function App() {
         <div className="nav-right">
           {me?.user ? (
             <>
-              {me?.subscriptions?.some((sub) => ['active', 'trialing'].includes(sub.status)) && (
+              {hasActivePro(me) && (
                 <button
                   className="nav-link"
                   onClick={() => {
@@ -396,7 +417,7 @@ export default function App() {
                     setRoutePath("/alerts");
                   }}
                 >
-                  🔔 Alertes
+                  🔔 Alertes Pro
                 </button>
               )}
               <button
@@ -601,22 +622,17 @@ export default function App() {
                       <p>{verdict}</p>
                     </div>
 
-                    {/* PREMIUM SECTION - LOCKED & BLURRED */}
-                    <div 
-                      className="premium-locked-section"
-                      onClick={() => scrollToId("pricing")}
-                      style={{ 
-                        marginTop: "1.4rem", 
-                        padding: "1.1rem", 
-                        borderRadius: "0.9rem", 
-                        background: "rgba(68, 255, 210, 0.08)", 
-                        border: "1px solid rgba(68, 255, 210, 0.2)",
-                        cursor: "pointer",
-                        position: "relative",
-                        transition: "all 0.2s ease"
-                      }}
-                    >
-                      <div className="premium-blur-content" style={{ filter: "blur(4px)", pointerEvents: "none" }}>
+                    {/* PREMIUM SECTION - Only for Premium & Pro subscribers */}
+                    {(hasActivePremium(me) || hasActivePro(me)) ? (
+                      <div 
+                        style={{ 
+                          marginTop: "1.4rem", 
+                          padding: "1.1rem", 
+                          borderRadius: "0.9rem", 
+                          background: "rgba(68, 255, 210, 0.08)", 
+                          border: "1px solid rgba(68, 255, 210, 0.2)"
+                        }}
+                      >
                         <p style={{ fontSize: "0.9rem", fontWeight: 600, color: "#44ffd2", margin: "0 0 0.8rem 0" }}>
                           💰 Analyse Premium détaillée
                         </p>
@@ -624,51 +640,104 @@ export default function App() {
                           <div>
                             <p style={{ color: "#a3a7b8", margin: 0 }}>Frais de gestion annuels</p>
                             <p style={{ fontWeight: 600, fontSize: "1.1rem", margin: "0.2rem 0 0", color: "#f5f5f7" }}>
-                              972 €
+                              {Math.round(data.rentMonthly * 12 * 0.08)} €
                             </p>
                           </div>
                           <div>
                             <p style={{ color: "#a3a7b8", margin: 0 }}>Garantie loyer impayé annuelle</p>
                             <p style={{ fontWeight: 600, fontSize: "1.1rem", margin: "0.2rem 0 0", color: "#f5f5f7" }}>
-                              96 €
+                              {Math.round(data.rentMonthly * 12 * 0.008)} €
                             </p>
                           </div>
                           <div>
-                            <p style={{ color: "#a3a7b8", margin: 0 }}>Prélèvement à la source annuel</p>
+                            <p style={{ color: "#a3a7b8", margin: 0 }}>Prélèvement à la source annuel (18%)</p>
                             <p style={{ fontWeight: 600, fontSize: "1.1rem", margin: "0.2rem 0 0", color: "#f5f5f7" }}>
-                              2160 €
+                              {Math.round(data.rentMonthly * 12 * 0.18)} €
                             </p>
                           </div>
                           <div>
-                            <p style={{ color: "#a3a7b8", margin: 0 }}>Prélèvements sociaux annuels</p>
+                            <p style={{ color: "#a3a7b8", margin: 0 }}>Prélèvements sociaux annuels (17.2%)</p>
                             <p style={{ fontWeight: 600, fontSize: "1.1rem", margin: "0.2rem 0 0", color: "#f5f5f7" }}>
-                              972 €
+                              {Math.round(data.rentMonthly * 12 * 0.172)} €
                             </p>
                           </div>
                         </div>
                         <div style={{ marginTop: "0.9rem", paddingTop: "0.9rem", borderTop: "1px solid rgba(68, 255, 210, 0.15)" }}>
-                          <p style={{ color: "#a3a7b8", margin: 0, fontSize: "0.85rem" }}>Total frais annuels</p>
+                          <p style={{ color: "#a3a7b8", margin: 0, fontSize: "0.85rem" }}>Total frais & impôts annuels estimés</p>
                           <p style={{ fontWeight: 700, fontSize: "1.2rem", margin: "0.2rem 0 0", color: "#44ffd2" }}>
-                            4200 €
+                            {Math.round(data.rentMonthly * 12 * (0.08 + 0.008 + 0.18 + 0.172))} €
                           </p>
                         </div>
                       </div>
-                      <div style={{ 
-                        position: "absolute", 
-                        top: "50%", 
-                        left: "50%", 
-                        transform: "translate(-50%, -50%)",
-                        background: "rgba(68, 255, 210, 0.95)",
-                        color: "#050509",
-                        padding: "0.7rem 1.4rem",
-                        borderRadius: "999px",
-                        fontWeight: 700,
-                        fontSize: "0.9rem",
-                        boxShadow: "0 8px 24px rgba(68, 255, 210, 0.4)"
-                      }}>
-                        🔒 Débloqué avec Premium
+                    ) : (
+                      <div 
+                        className="premium-locked-section"
+                        onClick={() => scrollToId("pricing")}
+                        style={{ 
+                          marginTop: "1.4rem", 
+                          padding: "1.1rem", 
+                          borderRadius: "0.9rem", 
+                          background: "rgba(68, 255, 210, 0.08)", 
+                          border: "1px solid rgba(68, 255, 210, 0.2)",
+                          cursor: "pointer",
+                          position: "relative",
+                          transition: "all 0.2s ease"
+                        }}
+                      >
+                        <div className="premium-blur-content" style={{ filter: "blur(4px)", pointerEvents: "none" }}>
+                          <p style={{ fontSize: "0.9rem", fontWeight: 600, color: "#44ffd2", margin: "0 0 0.8rem 0" }}>
+                            💰 Analyse Premium détaillée
+                          </p>
+                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.9rem", fontSize: "0.9rem" }}>
+                            <div>
+                              <p style={{ color: "#a3a7b8", margin: 0 }}>Frais de gestion annuels</p>
+                              <p style={{ fontWeight: 600, fontSize: "1.1rem", margin: "0.2rem 0 0", color: "#f5f5f7" }}>
+                                972 €
+                              </p>
+                            </div>
+                            <div>
+                              <p style={{ color: "#a3a7b8", margin: 0 }}>Garantie loyer impayé annuelle</p>
+                              <p style={{ fontWeight: 600, fontSize: "1.1rem", margin: "0.2rem 0 0", color: "#f5f5f7" }}>
+                                96 €
+                              </p>
+                            </div>
+                            <div>
+                              <p style={{ color: "#a3a7b8", margin: 0 }}>Prélèvement à la source annuel</p>
+                              <p style={{ fontWeight: 600, fontSize: "1.1rem", margin: "0.2rem 0 0", color: "#f5f5f7" }}>
+                                2160 €
+                              </p>
+                            </div>
+                            <div>
+                              <p style={{ color: "#a3a7b8", margin: 0 }}>Prélèvements sociaux annuels</p>
+                              <p style={{ fontWeight: 600, fontSize: "1.1rem", margin: "0.2rem 0 0", color: "#f5f5f7" }}>
+                                972 €
+                              </p>
+                            </div>
+                          </div>
+                          <div style={{ marginTop: "0.9rem", paddingTop: "0.9rem", borderTop: "1px solid rgba(68, 255, 210, 0.15)" }}>
+                            <p style={{ color: "#a3a7b8", margin: 0, fontSize: "0.85rem" }}>Total frais annuels</p>
+                            <p style={{ fontWeight: 700, fontSize: "1.2rem", margin: "0.2rem 0 0", color: "#44ffd2" }}>
+                              4200 €
+                            </p>
+                          </div>
+                        </div>
+                        <div style={{ 
+                          position: "absolute", 
+                          top: "50%", 
+                          left: "50%", 
+                          transform: "translate(-50%, -50%)",
+                          background: "rgba(68, 255, 210, 0.95)",
+                          color: "#050509",
+                          padding: "0.7rem 1.4rem",
+                          borderRadius: "999px",
+                          fontWeight: 700,
+                          fontSize: "0.9rem",
+                          boxShadow: "0 8px 24px rgba(68, 255, 210, 0.4)"
+                        }}>
+                          🔒 Débloqué avec Premium
+                        </div>
                       </div>
-                    </div>
+                    )}
 
                     {/* Bouton d'enregistrement */}
                     <button
@@ -716,60 +785,90 @@ export default function App() {
                       </div>
                     )}
 
-                    {/* ADVANCED ANALYSIS - LOCKED & BLURRED */}
-                    <div 
-                      className="premium-locked-section"
-                      onClick={() => scrollToId("pricing")}
-                      style={{ 
-                        marginTop: "1.3rem", 
-                        padding: "1.1rem", 
-                        borderRadius: "1rem", 
-                        border: "1px solid rgba(255, 255, 255, 0.18)",
-                        background: "radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), rgba(5, 5, 12, 0.98))",
-                        boxShadow: "0 18px 40px rgba(0, 0, 0, 0.85)",
-                        cursor: "pointer",
-                        position: "relative",
-                        transition: "all 0.18s ease-out"
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = "rgba(68, 255, 210, 0.7)";
-                        e.currentTarget.style.boxShadow = "0 26px 70px rgba(0, 0, 0, 0.95)";
-                        e.currentTarget.style.transform = "translateY(-1px)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.18)";
-                        e.currentTarget.style.boxShadow = "0 18px 40px rgba(0, 0, 0, 0.85)";
-                        e.currentTarget.style.transform = "translateY(0)";
-                      }}
-                    >
-                      <div style={{ filter: "blur(3px)", pointerEvents: "none" }}>
-                        <p style={{ fontSize: "0.9rem", fontWeight: 600, margin: "0 0 0.5rem 0" }}>
-                          🚀 Passez à la suite : Analyses avancées
+                    {/* ADVANCED ANALYSIS - Only for Pro subscribers */}
+                    {hasActivePro(me) ? (
+                      <div 
+                        style={{ 
+                          marginTop: "1.3rem", 
+                          padding: "1.1rem", 
+                          borderRadius: "1rem", 
+                          border: "1px solid rgba(68, 255, 210, 0.3)",
+                          background: "radial-gradient(circle at top left, rgba(68, 255, 210, 0.15), rgba(5, 5, 12, 0.98))",
+                          boxShadow: "0 18px 40px rgba(68, 255, 210, 0.2)"
+                        }}
+                      >
+                        <p style={{ fontSize: "0.9rem", fontWeight: 600, margin: "0 0 0.5rem 0", color: "#44ffd2" }}>
+                          🚀 Analyses avancées Pro
                         </p>
-                        <div style={{ fontSize: "0.85rem", color: "#a8acbe", lineHeight: "1.5" }}>
-                          <p style={{ margin: "0.3rem 0" }}>• Scénarios financiers avancés avec projections 10 ans</p>
-                          <p style={{ margin: "0.3rem 0" }}>• Alertes temps réel sur les nouveaux biens rentables</p>
-                          <p style={{ margin: "0.3rem 0" }}>• Optimisation fiscale et comparaison multi-biens</p>
-                          <p style={{ margin: "0.3rem 0" }}>• Accès complet à tous les outils d'analyse IA</p>
+                        <div style={{ fontSize: "0.85rem", color: "#f5f5f7", lineHeight: "1.5" }}>
+                          <p style={{ margin: "0.3rem 0" }}>• Scénarios financiers : apport variable, taux négociés, durées multiples</p>
+                          <p style={{ margin: "0.3rem 0" }}>• Projections cashflow sur 10 ans avec inflation</p>
+                          <p style={{ margin: "0.3rem 0" }}>• Optimisation fiscale LMNP vs location nue</p>
+                          <p style={{ margin: "0.3rem 0" }}>• Comparaison multi-biens côte à côte</p>
+                        </div>
+                        <button
+                          className="secondary-ghost"
+                          style={{ marginTop: "0.8rem", width: "100%" }}
+                          onClick={() => alert("Fonctionnalité en développement - disponible Q1 2026")}
+                        >
+                          Lancer une analyse avancée
+                        </button>
+                      </div>
+                    ) : (
+                      <div 
+                        className="premium-locked-section"
+                        onClick={() => scrollToId("pricing")}
+                        style={{ 
+                          marginTop: "1.3rem", 
+                          padding: "1.1rem", 
+                          borderRadius: "1rem", 
+                          border: "1px solid rgba(255, 255, 255, 0.18)",
+                          background: "radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), rgba(5, 5, 12, 0.98))",
+                          boxShadow: "0 18px 40px rgba(0, 0, 0, 0.85)",
+                          cursor: "pointer",
+                          position: "relative",
+                          transition: "all 0.18s ease-out"
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.borderColor = "rgba(68, 255, 210, 0.7)";
+                          e.currentTarget.style.boxShadow = "0 26px 70px rgba(0, 0, 0, 0.95)";
+                          e.currentTarget.style.transform = "translateY(-1px)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.18)";
+                          e.currentTarget.style.boxShadow = "0 18px 40px rgba(0, 0, 0, 0.85)";
+                          e.currentTarget.style.transform = "translateY(0)";
+                        }}
+                      >
+                        <div style={{ filter: "blur(3px)", pointerEvents: "none" }}>
+                          <p style={{ fontSize: "0.9rem", fontWeight: 600, margin: "0 0 0.5rem 0" }}>
+                            🚀 Passez au plan Pro : Analyses avancées
+                          </p>
+                          <div style={{ fontSize: "0.85rem", color: "#a8acbe", lineHeight: "1.5" }}>
+                            <p style={{ margin: "0.3rem 0" }}>• Scénarios financiers avancés avec projections 10 ans</p>
+                            <p style={{ margin: "0.3rem 0" }}>• Alertes temps réel sur les nouveaux biens rentables</p>
+                            <p style={{ margin: "0.3rem 0" }}>• Optimisation fiscale et comparaison multi-biens</p>
+                            <p style={{ margin: "0.3rem 0" }}>• Tags & organisation de portefeuille</p>
+                          </div>
+                        </div>
+                        <div style={{ 
+                          position: "absolute", 
+                          top: "50%", 
+                          left: "50%", 
+                          transform: "translate(-50%, -50%)",
+                          background: "linear-gradient(135deg, #f5f5f7, #c8ccd8)",
+                          color: "#050509",
+                          padding: "0.75rem 1.6rem",
+                          borderRadius: "999px",
+                          fontWeight: 700,
+                          fontSize: "0.88rem",
+                          boxShadow: "0 14px 35px rgba(0, 0, 0, 0.8)",
+                          whiteSpace: "nowrap"
+                        }}>
+                          🔒 Réservé au plan Pro
                         </div>
                       </div>
-                      <div style={{ 
-                        position: "absolute", 
-                        top: "50%", 
-                        left: "50%", 
-                        transform: "translate(-50%, -50%)",
-                        background: "linear-gradient(135deg, #f5f5f7, #c8ccd8)",
-                        color: "#050509",
-                        padding: "0.75rem 1.6rem",
-                        borderRadius: "999px",
-                        fontWeight: 700,
-                        fontSize: "0.88rem",
-                        boxShadow: "0 14px 35px rgba(0, 0, 0, 0.8)",
-                        whiteSpace: "nowrap"
-                      }}>
-                        Voir les abonnements Premium & Pro
-                      </div>
-                    </div>
+                    )}
                   </>
                 ) : (
                   <>
