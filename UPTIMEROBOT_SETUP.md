@@ -17,7 +17,7 @@ UptimeRobot ping automatiquement ton backend toutes les 5 minutes = **toujours r
 - Clique "+ Add New Monitor"
 - **Monitor Type**: HTTP(s)
 - **Friendly Name**: Real Estate AI Backend
-- **URL**: `https://real-estate-ai-backend-cy09.onrender.com/api/health`
+- **URL**: `https://real-estate-ai-backend-cy05.onrender.com/api/health`
 - **Monitoring Interval**: 5 minutes (max gratuit)
 - Clique "Create Monitor"
 
